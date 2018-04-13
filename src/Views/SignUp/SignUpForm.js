@@ -4,7 +4,7 @@ import * as firebase from "firebase";
 import { StackNavigator } from 'react-navigation';
 import Firebase from '../../Firebase/Firebase'
 import TagsList from '../Tags/TagsList';
-
+import DismissKeyboard from "dismissKeyboard";
 
 export default class SignUpForm extends React.Component{
     constructor(props) {
@@ -14,6 +14,8 @@ export default class SignUpForm extends React.Component{
             } catch (error) {}
         
         this.signup = this.signup.bind(this);
+        this.checkData=this.checkData.bind(this);
+        
         this.state = {
             email: "",
             password: "",
@@ -22,36 +24,54 @@ export default class SignUpForm extends React.Component{
             response: ""
         };
     }
+    async checkData(){
+        
+        //var dataFlag=false;
+        //check data
+        // if(this.state.email==""||this.state.password==""||this.state.fName==""||this.state.pNumber==""){
+        //     Alert.alert('A little problem','We need to know a few more details..');
+        // }else{this.signup}
+        
+    }
+    
     async signup() {
 
-        //DismissKeyboard();
+        DismissKeyboard();
 
         try {
             firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(function(user){ 
+            .then(function(user) {
+                // this.setState({
+                //     response: "account created"
+                // });
             });
-            var user = firebase.auth().currentUser;
-            firebase.database().ref('users/'+ user.uid).set({
-                    full_name: this.state.fName,
-                    email: this.state.email,
-                    //profile_picture : imageUrl
-                    phone_num: this.state.pNumber
-                  });
-            this.setState({
-                response: "account created"
+            var userId=firebase.auth().currentUser.uid;
+            firebase.database().ref('users/'+ userId).set({
+                full_name: this.state.fName,
+                email: this.state.email,
+                //profile_picture : imageUrl
+                phone_num: this.state.pNumber
             });
-            Alert.alert('Welcome:)\nnow you can start counting \nmoney for the weekend.. ;D');
+            Alert.alert('Welcome:)','Now you can start counting \nmoney for the weekend.. ;D');
+            //TODO : TIMEOUT? FOR WHAT??
             setTimeout(() => {
                 this.props.navigation.navigate('HomeScreen')
             }, 1500);
+            
+            
 
         } catch (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
             var errorMessage = error.message;
-            this.setState({
-                response: error.toString()
-            })
-            Alert.alert(
-                '!'+ errorMessage)
+            Alert.alert(errorCode.toString());
+            Alert.alert(errorMessage.toString());
+            // ...
+            // this.setState({
+            //     response: error.toString()
+            // })
+            // Alert.alert(
+            //     '!'+ errorMessage)
         }
 
     }
@@ -69,7 +89,7 @@ export default class SignUpForm extends React.Component{
                 onChangeText={(email) => this.setState({email})}
                 style={styles.input}/> 
                 <TextInput
-                placeholder="First Name"
+                placeholder="Full Name"
                 returnKeyType="next"
                 //onSubmitEditing={()=> this.passwordInput.focus()}
                 //keyboardType=""
@@ -77,7 +97,8 @@ export default class SignUpForm extends React.Component{
                 //autoCorrect={false}
                 onChangeText={(fName) => this.setState({fName})}
                 style={styles.input}/>
-                <TextInput
+
+                {/* <TextInput
                 placeholder="Last Name"
                 returnKeyType="next"
                 //onSubmitEditing={()=> this.passwordInput.focus()}
@@ -85,7 +106,8 @@ export default class SignUpForm extends React.Component{
                 //autoCapitalize="none"
                 //autoCorrect={false}
                 //value={this.state.usernameT}
-                style={styles.input}/>
+                style={styles.input}/> */}
+                
                 <TextInput
                 placeholder="Password"
                 returnKeyType="go"

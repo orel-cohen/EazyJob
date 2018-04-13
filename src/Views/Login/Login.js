@@ -69,24 +69,24 @@ export default class Login extends React.Component {
         DismissKeyboard();//down/close the keyboard
         if(this.state.email==""||this.state.password=="")
         {
-            Alert.alert("Hi:)\n"+"To login you should fill out email & password")
+            Alert.alert("Hi:)","For login you should fill out email & password\nor just SignUp:)")
         }else{
             try {
                 await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
-
-                this.setState({
-                    response: "Logged In!"
-                });
-
+                // var userId = firebase.auth().currentUser.uid;
+                // var headerText;
+                // firebase.database().ref('/users/'+userId).once("value").then(function(snapshot) {
+                //     var data=snapshot.val();
+                //     headerText= data.full_name || 'Anonymous';
+                // });
+                // Alert.alert(headerText);
                 setTimeout(() => {
-                    this.props.navigation.navigate('HomeScreen')
+                    this.props.navigation.navigate('HomeScreen',{title:'Hi '/*+ headerText */})
                 }, 1500);
 
             } catch (error) {
-                this.setState({
-                    response: error.toString()
-                })
-                Alert.alert("Houston, We Have a Problem!\n"+ response)
+                
+                Alert.alert("Houston, We Have a Problem!","User not found, check your data and try again..\nOr just SignUp:)")
             }
     }
 
@@ -96,9 +96,10 @@ export default class Login extends React.Component {
         if (true){  //  this.state.userLoaded==false) {
         return(  
             <KeyboardAvoidingView behavior="padding" style={styles.loginContainer}>
-                <Logo style={styles.loginContainer}/>
+                <Text style={styles.titleContainer}> EazyJob</Text> 
                 <View style={styles.container}>
                     <TextInput
+                        underlineColorAndroid='transparent' //for to hide underline
                         placeholder="email"
                         returnKeyType="next"
                         onSubmitEditing={()=> this.passwordInput.focus()}
@@ -107,26 +108,32 @@ export default class Login extends React.Component {
                         autoCorrect={false}
                         //onChangeText={this.handleEmail}
                         onChangeText={(email) => this.setState({email})}
+                        placeholderTextColor="rgba(255,255,255,0.7)"
                         style={styles.input}/>
                     <TextInput
+                        underlineColorAndroid='transparent' //for to hide underline
                         placeholder="password"
                         returnKeyType="go"
                         secureTextEntry
                         style={styles.input}
                         //onChangeText={this.handlePass}
                         onChangeText={(password) => this.setState({password})}
+                        placeholderTextColor="rgba(255,255,255,0.7)"
                         ref={(input)=> this.passwordInput=input}
                     />
 
                     <TouchableOpacity onPress={this.login} style={styles.buttonContainer}>
                         <Text style={styles.buttonText}>LOGIN</Text>
                     </TouchableOpacity>
-                </View>
-                <Button 
-                    title="don't have account yet? SignUp"
-                    onPress={()=> this.props.navigation.navigate('SignUpForm')}//this.signup}
                     
-                />
+                </View>
+                <Text 
+                    onPress={()=> this.props.navigation.navigate('SignUpForm')}//this.signup}
+                    style={styles.signupStyle}
+                >
+                Not a member? SignUp
+                </Text>
+
             </KeyboardAvoidingView>
             
             
@@ -138,37 +145,50 @@ export default class Login extends React.Component {
 const styles = StyleSheet.create({
     loginContainer: {
         flex:1,
+        backgroundColor: '#3498db',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         // flexDirection: 'column'
     },
-    formContainer: {
+    titleContainer: {
+        paddingVertical:150, 
+        fontSize: 30,
+        fontWeight: 'bold',
+        color:'#FFF'
         //alignContent: 'space-between',
     },
     container: {
         padding: 15,
-        alignItems:'center',
-        justifyContent:'center',
+        //alignItems:'center',
+        //justifyContent:'flex-end',
        // flexDirection: 'column'
     },
     input: {
       width: 300,
       height: 45,
-      backgroundColor: 'rgba(255,255,255,0.8)',
-      marginBottom: 12,
-      color: 'rgba(0,0,0,1)',
+      backgroundColor: 'rgba(255,255,255,0.2)',
+      marginBottom: 20,
+      color: '#FFF',
       paddingHorizontal: 10,
+      
     },
     buttonText:{
-        color: 'rgba(0,0,0,1)',
+        color: '#FFFFFF',
         textAlign: 'center',
-        fontWeight: '700'
-        
+        fontWeight: '700',
+        paddingHorizontal: 20
     },
     buttonContainer: {
-        backgroundColor: 'rgba(255,255,255,0.7)',
-        paddingVertical: 15
+        backgroundColor: '#2980b9',
+        paddingVertical: 14
     },
+    signupStyle: {
+        color: 'rgba(255,255,255,1)',
+        fontWeight: '700',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 15
+    }
 
   });
 

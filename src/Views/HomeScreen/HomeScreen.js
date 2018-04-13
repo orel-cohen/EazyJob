@@ -12,14 +12,17 @@ export default class HomeScreen extends React.Component {
         try {
             Firebase.initialise();
             } catch (error) {}
-        //var user = firebase.auth().currentUser;
-    }
-    
-    static navigationOptions = {
-        //header: null // !!! Hide Header
-        //title: "Welcome "+user.full_name
         
-      }
+        //username=this.state.headerText;
+    }
+    static navigationOptions = ({ navigation, navigationOptions }) => {
+        const { params } = navigation.state;
+    
+        return {
+          title: params ? params.title : 'A Nested Details Screen'
+        }
+    
+    };
     render(){
         return(
             
