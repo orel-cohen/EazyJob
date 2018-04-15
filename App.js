@@ -10,6 +10,7 @@ import TagsList from './src/Views/Tags/TagsList'
 import _Date from './src/Views/Date_Time/_Date'
 import _Time from './src/Views/Date_Time/_Time'
 import SignUpForm from './src/Views/SignUp/SignUpForm'
+import HotJobs from './src/Views/Swip/Jobs/HotJobs'
 
 const Routes = StackNavigator(
   {
@@ -20,9 +21,10 @@ const Routes = StackNavigator(
     TagsList:   { screen: TagsList },
     _Date:   { screen: _Date },
     _Time:   { screen: _Time },
-    SignUpForm:  { screen: SignUpForm }
+    SignUpForm:  { screen: SignUpForm },
+	HotJobs: { screen: HotJobs },
   },
-  { initialRouteName: 'Login'}
+  { initialRouteName: 'HotJobs'}
 );
 
 export default Routes;
