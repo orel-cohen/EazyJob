@@ -24,7 +24,7 @@ const Routes = StackNavigator(
     SignUpForm:  { screen: SignUpForm },
 	HotJobs: { screen: HotJobs },
   },
-  { initialRouteName: 'HotJobs'}
+  { initialRouteName: 'Login'}
 );
 
 export default Routes;
