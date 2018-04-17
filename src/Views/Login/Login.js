@@ -9,7 +9,8 @@ import {
     TouchableOpacity,
     AppRegistry,
     dismissKeyboard,
-    Alert
+    Alert,
+    Image
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 //import { GoogleSignin } from 'react-native-google-signin';
@@ -20,6 +21,7 @@ import Logo from '../Logo'
 import HomeScreen from '../HomeScreen/HomeScreen'
 
 
+var provider = new firebase.auth.GoogleAuthProvider();
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -40,6 +42,27 @@ export default class Login extends React.Component {
         };
         
         this.login = this.login.bind(this);
+        this.signInWithGoogle=this.signInWithGoogle.bind(this);
+    }
+    signInWithGoogle()
+    {
+        console.log("we in!");
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+            // ...
+          }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
+          });
     }
     validate(text,type)
     {
@@ -72,6 +95,7 @@ export default class Login extends React.Component {
     static navigationOptions = {
         header: null // !!! Hide Header
       }
+
       getInitialView() {
 
         firebase.auth().onAuthStateChanged((user) => {
@@ -166,7 +190,9 @@ export default class Login extends React.Component {
                 >
                 Not a member? SignUp
                 </Text>
-
+                <Image onPress={this.signInWithGoogle}
+                source={require('../../Assets/google.png')}/>
+                       
             </KeyboardAvoidingView>
             
             
