@@ -24,17 +24,22 @@ export default class HomeScreen extends React.Component {
         
         var database = firebase.database();
         var userId = firebase.auth().currentUser.uid;
-        firebase.database().ref('users/' + userId).once('value').then(function(snapshot) {
+        firebase.database().ref('users/' + "FWVeYgcwZjeekzZzyBIskmvyEZu2").once('value').then(function(snapshot) {
             username = (snapshot.val() && snapshot.val().full_name) || 'Anonymous';
             console.log(username)
+            //this.props.navigation.setParams({otherParam:username+'!'})
               // ...
         });
         //  get empty username, why?
         //  Alert.alert(username,"test");
     }
-    static navigationOptions = {
-        title: username // !!! Hide Header
-      }
+    static navigationOptions = ({ navigation }) => {
+        const { params } = navigation.state;
+        
+        return {
+          title: params ? params.otherParam : 'A Nested Details Screen',
+        }
+    };
     render(){
         return(
             
@@ -43,7 +48,7 @@ export default class HomeScreen extends React.Component {
                     <MaterialIcons name="face" size={100} color="#ffffff" backgroundColor="#4286f4"/>
                     <Text style={styles.textView}>Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.ButtonView} onPress={()=> this.props.navigation.navigate('SignUpForm')}>
+                <TouchableOpacity style={styles.ButtonView} onPress={()=> this.props.navigation.navigate('HotJobs')}>
                     <MaterialCommunityIcons name="emoticon-excited" size={100} color="#ffffff" title="My Jobs"/>
                     <Text style={styles.textView}>My EazyJob</Text>
                 </TouchableOpacity>
