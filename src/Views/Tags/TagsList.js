@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
 
 const userList = {
@@ -11,7 +11,7 @@ const userList = {
 export default class test extends React.Component{
     render(){
         return(
-            <View>
+            <View style={styles.container}>
                 <CustomMultiPicker
                     options={userList}
                     search={true} // should show search bar?
@@ -34,3 +34,14 @@ export default class test extends React.Component{
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 2,
+      width: 300,
+      backgroundColor: 'rgba(255,255,255,1)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: 15,
+    },
+});

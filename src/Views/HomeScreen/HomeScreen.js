@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import {MaterialIcons,MaterialCommunityIcons,Entypo} from '@expo/vector-icons'
+import {MaterialIcons,MaterialCommunityIcons,Entypo} from '@expo/vector-icons';
 import * as firebase from "firebase";
-import Firebase from '../../Firebase/Firebase'
+import Firebase from '../../Firebase/Firebase';
 
 
 export default class HomeScreen extends React.Component {
@@ -39,8 +39,8 @@ export default class HomeScreen extends React.Component {
                     <MaterialCommunityIcons name="mailbox" size={100} color="#006064" title="My Jobs"/>
                     <Text>Messege</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.ButtonView} onPress={()=> this.props.navigation.navigate('Ad')}>
-                    <Entypo name="megaphone" size={100} color="#006064" backgroundColor="#4286f4"/>
+                <TouchableOpacity style={styles.ButtonView} onPress={()=> this.props.navigation.navigate('CreateAd')}>
+                    <Entypo name="megaphone" size={100} color="#006064" backgroundColor="#4286f4" title="Post Ad"/>
                     <Text>Post Ad</Text>
                 </TouchableOpacity>
                 

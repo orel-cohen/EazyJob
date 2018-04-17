@@ -15,9 +15,9 @@ import { StackNavigator } from 'react-navigation';
 //import { GoogleSignin } from 'react-native-google-signin';
 import * as firebase from "firebase";
 import DismissKeyboard from "dismissKeyboard";
-import Firebase from '../../Firebase/Firebase'
-import Logo from '../Logo'
-import HomeScreen from '../HomeScreen/HomeScreen'
+import Firebase from '../../Firebase/Firebase';
+import Logo from '../Logo';
+import HomeScreen from '../HomeScreen/HomeScreen';
 
 
 

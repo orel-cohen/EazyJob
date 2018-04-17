@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-  
+
 export default class Logo extends React.Component {
     render(){
         return(
