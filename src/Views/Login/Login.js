@@ -32,6 +32,8 @@ export default class Login extends React.Component {
         this.state = {
             email: "",
             password: "",
+            emailValdate:true,
+            passwordValdate:true,
             response: "",
             userLoaded: false,
             initialView: "null"
@@ -39,6 +41,34 @@ export default class Login extends React.Component {
         
         this.login = this.login.bind(this);
     }
+    validate(text,type)
+    {
+        pass=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+        e_mail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (type=='email'){
+            if(e_mail.test(text)){
+                this.setState({
+                    emailValdate:true,
+                })
+            }else{
+                this.setState({
+                    emailValdate:false,
+                })
+            }
+        }
+        else if (type=='password'){
+            if(pass.test(text)){
+                this.setState({
+                    passwordValdate:true,
+                })
+            }else{
+                this.setState({
+                    passwordValdate:false,
+                })
+            }
+        }
+    }
+
     static navigationOptions = {
         header: null // !!! Hide Header
       }
@@ -81,7 +111,7 @@ export default class Login extends React.Component {
                 // });
                 // Alert.alert(headerText);
                 setTimeout(() => {
-                    this.props.navigation.navigate('HomeScreen',{title:'Hi '/*+ headerText */})
+                    this.props.navigation.navigate('HomeScreen'/* ,{title:'Hi '+ headerText } */ )
                 }, 1500);
 
             } catch (error) {
@@ -99,6 +129,8 @@ export default class Login extends React.Component {
                 <Text style={styles.titleContainer}> EazyJob</Text> 
                 <View style={styles.container}>
                     <TextInput
+                        style={[styles.input,
+                        !this.state.emailValdate? styles.error:null]}
                         underlineColorAndroid='transparent' //for to hide underline
                         placeholder="email"
                         returnKeyType="next"
@@ -107,17 +139,18 @@ export default class Login extends React.Component {
                         autoCapitalize="none"
                         autoCorrect={false}
                         //onChangeText={this.handleEmail}
-                        onChangeText={(email) => this.setState({email})}
+                        onChangeText={(email) =>{ this.setState({email}); this.validate(email,'email')}}
                         placeholderTextColor="rgba(255,255,255,0.7)"
-                        style={styles.input}/>
+                        />
                     <TextInput
+                        style={[styles.input,
+                        !this.state.passwordValdate? styles.error:null]}
                         underlineColorAndroid='transparent' //for to hide underline
                         placeholder="password"
                         returnKeyType="go"
                         secureTextEntry
-                        style={styles.input}
                         //onChangeText={this.handlePass}
-                        onChangeText={(password) => this.setState({password})}
+                        onChangeText={(password) =>{ this.setState({password}); this.validate(password,'password')}}
                         placeholderTextColor="rgba(255,255,255,0.7)"
                         ref={(input)=> this.passwordInput=input}
                     />
@@ -188,8 +221,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 15
+    },
+    error:{
+        borderWidth:2,
+        borderColor:'red'
     }
-
   });
 
   
