@@ -15,6 +15,7 @@ export default class DateZona extends React.Component {
           date={this.state.date}
           mode="date"
           format="DD-MM-YYYY"
+          showIcon={false}
           customStyles={{
               dateIcon: {
               position: 'absolute',

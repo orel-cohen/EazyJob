@@ -1,0 +1,49 @@
+const styles = StyleSheet.create({
+    loginContainer: {
+        flex:1,
+        backgroundColor: '#3498db',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        // flexDirection: 'column'
+    },
+    titleContainer: {
+        paddingVertical:150, 
+        fontSize: 30,
+        fontWeight: 'bold',
+        color:'#FFF'
+        //alignContent: 'space-between',
+    },
+    container: {
+        padding: 15,
+        //alignItems:'center',
+        //justifyContent:'flex-end',
+       // flexDirection: 'column'
+    },
+    input: {
+      width: 300,
+      height: 45,
+      backgroundColor: 'rgba(255,255,255,0.2)',
+      marginBottom: 20,
+      color: '#FFF',
+      paddingHorizontal: 10,
+      
+    },
+    buttonText:{
+        color: '#FFFFFF',
+        textAlign: 'center',
+        fontWeight: '700',
+        paddingHorizontal: 20
+    },
+    buttonContainer: {
+        backgroundColor: '#2980b9',
+        paddingVertical: 14
+    },
+    signupStyle: {
+        color: 'rgba(255,255,255,1)',
+        fontWeight: '700',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 15
+    }
+
+  });

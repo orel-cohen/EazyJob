@@ -6,6 +6,7 @@ import Login from './src/Views/Login/Login'
 import HomeScreen from './src/Views/HomeScreen/HomeScreen'
 import Logo from './src/Views/Logo'
 import CreateAd from './src/Views/Ad/CreateAd'
+import Ad from './src/Views/Ad/Ad'
 import TagsList from './src/Views/Tags/TagsList'
 import _Date from './src/Views/Date_Time/_Date'
 import _Time from './src/Views/Date_Time/_Time'
@@ -17,7 +18,8 @@ const Routes = StackNavigator(
     Login:      { screen: Login },
     HomeScreen: { screen: HomeScreen },
     Logo:       { screen: Logo },
-    Ad:         { screen: CreateAd },
+    CreateAd:   { screen: CreateAd },
+    Ad:         { screen: Ad },
     TagsList:   { screen: TagsList },
     _Date:   { screen: _Date },
     _Time:   { screen: _Time },

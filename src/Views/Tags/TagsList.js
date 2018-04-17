@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
 import * as firebase from "firebase";
 import { StackNavigator } from 'react-navigation';

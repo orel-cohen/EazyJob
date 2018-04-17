@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { StyleSheet, Button, ScrollView, Text, View, TextInput, TouchableOpacity, AppRegistry, Alert } from 'react-native';
 import * as firebase from "firebase";
 import { StackNavigator } from 'react-navigation';
-import Firebase from '../../Firebase/Firebase'
+import Firebase from '../../Firebase/Firebase';
 import TagsList from '../Tags/TagsList';
 import DismissKeyboard from "dismissKeyboard";
 
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 10,
     },
     buttonText:{
-        color: 'rgba(0,0,0,1)',
+       color: 'rgba(0,0,0,1)',
         textAlign: 'center',
         fontWeight: '700'
         
