@@ -18,11 +18,66 @@ export default class SignUpForm extends React.Component{
         
         this.state = {
             email: "",
+            emailValdate:true,
             password: "",
+            passwordValdate:true,
             fName:"",
+            fNameValdate:true,
             pNumber:"",
+            pNumberValdate:true,
             response: ""
         };
+    }
+    validate(text,type)
+    {
+        fName= /^([A-Z]|[a-z])([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/
+        pass=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+        e_mail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        pNumber=/^([05][0-9]{9})$/
+        if (type=='email'){
+            if(e_mail.test(text)){
+                this.setState({
+                    emailValdate:true,
+                })
+            }else{
+                this.setState({
+                    emailValdate:false,
+                })
+            }
+        }
+        else if (type=='password'){
+            if(pass.test(text)){
+                this.setState({
+                    passwordValdate:true,
+                })
+            }else{
+                this.setState({
+                    passwordValdate:false,
+                })
+            }
+        }
+        else if (type=='fName'){
+            if(fName.test(text)){
+                this.setState({
+                    fNameValdate:true,
+                })
+            }else{
+                this.setState({
+                    fNameValdate:false,
+                })
+            }
+        }
+        else if (type=='pNumber'){
+            if(pNumber.test(text)){
+                this.setState({
+                    pNumberValdate:true,
+                })
+            }else{
+                this.setState({
+                    pNumberValdate:false,
+                })
+            }
+        }
     }
     async checkData(){
         
@@ -77,23 +132,26 @@ export default class SignUpForm extends React.Component{
             <View style={styles.container}>
 
                 <TextInput
+                style={[styles.input,
+                !this.state.emailValdate? styles.error:null]}
                 placeholder="Email"
                 returnKeyType="next"
                 //onSubmitEditing={()=> this.passwordInput.focus()}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
-                onChangeText={(email) => this.setState({email})}
-                style={styles.input}/> 
+                onChangeText={(email) =>{ this.setState({email}); this.validate(email,'email')}}/> 
+
                 <TextInput
+                style={[styles.input,
+                !this.state.fNameValdate? styles.error:null]}
                 placeholder="Full Name"
                 returnKeyType="next"
                 //onSubmitEditing={()=> this.passwordInput.focus()}
                 //keyboardType=""
                 //autoCapitalize="none"
                 //autoCorrect={false}
-                onChangeText={(fName) => this.setState({fName})}
-                style={styles.input}/>
+                onChangeText={(fName) =>{ this.setState({fName}); this.validate(fName,'fName')}}/>
 
                 {/* <TextInput
                 placeholder="Last Name"
@@ -105,23 +163,27 @@ export default class SignUpForm extends React.Component{
                 //value={this.state.usernameT}
                 style={styles.input}/> */}
                 
+
                 <TextInput
-                placeholder="Password"
-                returnKeyType="go"
-                secureTextEntry
-                style={styles.input}
-                ref={(input)=> this.passwordInput=input}
-                onChangeText={(password) => this.setState({password})}
-                />
-                <TextInput
+                style={[styles.input,
+                !this.state.pNumberValdate? styles.error:null]}
                 placeholder="Phone Number"
                 returnKeyType="next"
                 //onSubmitEditing={()=> this.passwordInput.focus()}
                 keyboardType="phone-pad"
                 //autoCapitalize="none"
                 //autoCorrect={false}
-                onChangeText={(pNumber) => this.setState({pNumber})}
-                style={styles.input}/>
+                onChangeText={(pNumber) =>{ this.setState({pNumber}); this.validate(pNumber,'pNumber')}}/>
+
+                <TextInput
+                style={[styles.input,
+                !this.state.passwordValdate? styles.error:null]}
+                placeholder="Password"
+                returnKeyType="go"
+                secureTextEntry
+                ref={(input)=> this.passwordInput=input}
+                onChangeText={(password) =>{ this.setState({password}); this.validate(password,'password')}}/>
+                <Text> *Password with minimum eight characters at least 1 letter and 1 number  </Text>
                 <Button 
                 onPress = {this.signup} //()=> this.props.navigation.navigate('TagsList') }
                  title = 'Continue'/>
@@ -160,11 +222,14 @@ const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingVertical: 15
-    },  TextStyle:
-  {
+    },  
+    TextStyle:{
      fontSize: 23,
      textAlign: 'center',
      color: '#000',
   },
-
+  error:{
+    borderWidth:2,
+    borderColor:'red'
+    }
   });
