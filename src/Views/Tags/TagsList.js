@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
+import * as firebase from "firebase";
+import { StackNavigator } from 'react-navigation';
+import Firebase from '../../Firebase/Firebase'
 
-const userList = {
+
+userList = {
   "123":"Tom",
   "124":"Michael",
   "125":"Christin",
-  "1":"test"
+  "126":"test",
+  "127":"shir"
+
 }
 export default class test extends React.Component{
+    constructor(props) {
+        super(props);
+        try {
+            Firebase.initialise();
+            } catch (error) {}
+
+        
+    }
     render(){
         return(
             <View>

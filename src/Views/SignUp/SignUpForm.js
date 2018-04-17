@@ -37,15 +37,12 @@ export default class SignUpForm extends React.Component{
     async signup() {
 
         DismissKeyboard();
-
+        var database = firebase.database();
         try {
             firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(function(user) {
-                // this.setState({
-                //     response: "account created"
-                // });
             });
-            var userId=firebase.auth().currentUser.uid;
+            var userId=firebase.auth().currentUser.uid;            
             firebase.database().ref('users/'+ userId).set({
                 full_name: this.state.fName,
                 email: this.state.email,

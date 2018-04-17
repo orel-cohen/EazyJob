@@ -81,7 +81,7 @@ export default class Login extends React.Component {
                 // });
                 // Alert.alert(headerText);
                 setTimeout(() => {
-                    this.props.navigation.navigate('HomeScreen',{title:'Hi '/*+ headerText */})
+                    this.props.navigation.navigate('HomeScreen'/* ,{title:'Hi '+ headerText } */ )
                 }, 1500);
 
             } catch (error) {

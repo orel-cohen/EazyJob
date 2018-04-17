@@ -12,9 +12,9 @@ export default class CreateAd extends React.Component {
     render(){
         return(
             <View>
-                <Image style={styles.logoStyle}
-                    source={require('../../Assets/logo.jpeg')}>
-                </Image>
+                <Text >
+                    testText
+                </Text>
             </View>
             
 
