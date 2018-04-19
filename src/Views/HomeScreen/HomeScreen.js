@@ -43,23 +43,28 @@ export default class HomeScreen extends React.Component {
     render(){
         return(
             
-            <View style={styles.HomeScreen}>
-                <TouchableOpacity style={styles.ButtonView} onPress={()=> this.props.navigation.navigate('Logo')}>
-                    <MaterialIcons name="face" size={100} color="#ffffff" backgroundColor="#4286f4"/>
-                    <Text style={styles.textView}>Profile</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.ButtonView} onPress={()=> this.props.navigation.navigate('HotJobs')}>
-                    <MaterialCommunityIcons name="emoticon-excited" size={100} color="#ffffff" title="My Jobs"/>
-                    <Text style={styles.textView}>My EazyJob</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.ButtonView} onPress={()=> this.props.navigation.navigate('TagsList')}>
-                    <MaterialCommunityIcons name="mailbox" size={100} color="#ffffff" title="My Jobs"/>
-                    <Text style={styles.textView}>Messege</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.ButtonView} onPress={()=> this.props.navigation.navigate('CreateAd')}>
-                    <Entypo name="megaphone" size={100} color="#006064" backgroundColor="#4286f4" title="Post Ad"/>
-                    <Text>Post Ad</Text>
-                </TouchableOpacity>
+            <View style={styles.mainStyle}>
+
+                <View style={styles.buttonLineStyle}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Logo')}>
+                        <MaterialIcons name="face" size={100} color="#ffffff" backgroundColor="#4286f4"/>
+                        <Text style={styles.textView}>Profile</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('HotJobs')}>
+                        <MaterialCommunityIcons name="emoticon-excited" size={100} color="#ffffff" title="My Jobs"/>
+                        <Text style={styles.textView}>EazyJob</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('TagsList')}>
+                        <MaterialCommunityIcons name="mailbox" size={100} color="#ffffff" title="My Jobs"/>
+                        <Text style={styles.textView}>Messege</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.buttonLineStyle}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('CreateAd')}>
+                        <Entypo name="megaphone" size={100} color="#ffffff" backgroundColor="#4286f4" title="Post Ad"/>
+                        <Text style={styles.textView}>Post{'\n'}EazyJob</Text>
+                    </TouchableOpacity>
+                </View>
                 
             </View>
         );
@@ -68,18 +73,30 @@ export default class HomeScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
-    HomeScreen: {
+    mainStyle: {
         backgroundColor: '#3498db',
         flex:1,
         alignItems: 'center',
         justifyContent: 'space-around',
-        flexDirection: 'row'
+        flexDirection: 'column',
+        
     },
-    ButtonView:{
-        alignItems: 'center',
+    buttonLineStyle:{
+        flex:1,
+        flexDirection: 'row',
+        //alignItems: 'center',
         justifyContent: 'space-around',
+        paddingVertical:30
     },
     textView:{
-        color:'#ffffff'
+        color:'#ffffff',
+        textAlign: 'center'
+    },
+    buttonStyle: {
+        flex:1,
+        flexDirection: 'column',
+        //justifyContent: 'center',
+        alignItems: 'center',
+        
     }
 })

@@ -25,7 +25,8 @@ export default class SignUpForm extends React.Component{
             fNameValdate:true,
             pNumber:"",
             pNumberValdate:true,
-            response: ""
+            response: "",
+            succesToCraete:false
         };
     }
     validate(text,type)
@@ -96,20 +97,24 @@ export default class SignUpForm extends React.Component{
         try {
             firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(function(user) {
+                this.setState({
+                    succesToCraete:true
+                })
             });
-            var userId=firebase.auth().currentUser.uid;            
-            firebase.database().ref('users/'+ userId).set({
-                full_name: this.state.fName,
-                email: this.state.email,
-                //profile_picture : imageUrl
-                phone_num: this.state.pNumber
-            });
-            Alert.alert('Welcome:)','Now you can start counting \nmoney for the weekend.. ;D');
-            //TODO : TIMEOUT? FOR WHAT??
-            setTimeout(() => {
-                this.props.navigation.navigate('HomeScreen')
-            }, 1500);
-            
+            if(succesToCraete==true){
+                var userId=firebase.auth().currentUser.uid;            
+                firebase.database().ref('users/'+ userId).set({
+                    full_name: this.state.fName,
+                    email: this.state.email,
+                    //profile_picture : imageUrl
+                    phone_num: this.state.pNumber
+                });
+                Alert.alert('Welcome:)','Now you can start counting \nmoney for the weekend.. ;D');
+                //TODO : TIMEOUT? FOR WHAT??
+                setTimeout(() => {
+                    this.props.navigation.navigate('HomeScreen')
+                }, 1500);
+            }
             
 
         } catch (error) {
