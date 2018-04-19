@@ -47,6 +47,8 @@ export default class Login extends React.Component {
     signInWithGoogle()
     {
         console.log("we in!");
+        //Alert.alert("Hi:)","SignUp with Google is currently unavailable and will be available soon")
+
         // firebase.auth().signInWithPopup(provider).then(function(result) {
         //     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         //     var token = result.credential.accessToken;
@@ -134,9 +136,17 @@ export default class Login extends React.Component {
                 //     var data=snapshot.val();
                 //     headerText= data.full_name || 'Anonymous';
                 // });
-                // Alert.alert(headerText);
+                var database = firebase.database();
+                var userId = firebase.auth().currentUser.uid;
+                var username="empty"
+                firebase.database().ref('users/' + userId).once('value').then(function(snapshot) {
+                    username = (snapshot.val() && snapshot.val().full_name) || 'Anonymous';
+                    console.log(username+" login")
+                    //this.props.navigation.setParams({otherParam:username+'!'})
+                      // ...
+                });
                 setTimeout(() => {
-                    this.props.navigation.navigate('HomeScreen'/* ,{title:'Hi '+ headerText } */ )
+                    this.props.navigation.navigate('HomeScreen' ,{namePar: username}  )
                 }, 1500);
 
             } catch (error) {
@@ -148,6 +158,7 @@ export default class Login extends React.Component {
     }
     
     render() {
+        const { navigate } = this.props.navigation;
         if (true){  //  this.state.userLoaded==false) {
         return(  
             <KeyboardAvoidingView behavior="padding" style={styles.loginContainer}>

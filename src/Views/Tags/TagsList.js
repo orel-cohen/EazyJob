@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
 import * as firebase from "firebase";
 import { StackNavigator } from 'react-navigation';
@@ -11,7 +11,17 @@ userList = {
   "124":"Michael",
   "125":"Christin",
   "126":"Test",
-  "127":"Orel"
+  "127":"Orel",
+  "127":"Tom1",
+  "129":"Michael1",
+  "130":"Christin1",
+  "131":"Test1",
+  "132":"Orel1",
+  "133":"Tom2",
+  "134":"Michael2",
+  "135":"Christin2",
+  "136":"Test2",
+  "137":"Orel2"
 
 }
 export default class test extends React.Component{
@@ -24,11 +34,11 @@ export default class test extends React.Component{
         
     }
     static navigationOptions = {
-        header: null // !!! Hide Header
+        //header: null // !!! Hide Header
       }
     render(){
         return(
-            <View style={styles.tagsView}>
+            <ScrollView style={styles.tagsView}>
                 {/* <View style={styles.tagsTest}/> */}
                 <CustomMultiPicker
                     options={userList}
@@ -46,9 +56,9 @@ export default class test extends React.Component{
                     selectedIconName={"ios-checkmark-circle-outline"}
                     unselectedIconName={"ios-radio-button-off-outline"}
                     scrollViewHeight={300}
-                    selected={[1,2]} // list of options which are selected by default
+                    selected={[]} // list of options which are selected by default
                     />
-            </View>
+            </ScrollView>
         );
     }
 }
