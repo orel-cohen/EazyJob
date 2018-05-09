@@ -197,12 +197,12 @@ export default class Login extends React.Component {
                     
                 </View>
                 <Text 
-                    onPress={()=> this.props.navigation.navigate('SignUpForm')}//this.signup}
+                    onPress={()=> this.props.navigation.navigate('SignUpForm',{selectedSub:"none"})}//this.signup}
                     style={styles.signupStyle}
                 >
                 Not a member? SignUp
                 </Text>
-                <TouchableOpacity onPress={this.signInWithGoogle()}>
+                <TouchableOpacity onPress={this.signInWithGoogle}>
                     <Image 
                     source={require('../../Assets/google.png')}/>
                 </TouchableOpacity>

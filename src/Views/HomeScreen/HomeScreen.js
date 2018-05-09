@@ -38,7 +38,7 @@ export default class HomeScreen extends React.Component {
          const { params } = navigation.state;
         
          return {
-           title: params ? 'Hi '+params.namePar : 'Hi',
+           title: params ? 'Hi '+params.namePar : 'Welcome',
          }
     };
     render(){
