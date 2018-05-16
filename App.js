@@ -5,13 +5,14 @@ import { StackNavigator } from 'react-navigation';
 import Login from './src/Views/Login/Login'
 import HomeScreen from './src/Views/HomeScreen/HomeScreen'
 import Logo from './src/Views/Logo'
-import CreateAd from './src/Views/Ad/CreateAd'
+import CreateAd from './src/Views/CreateAd/CreateAd'
 import Ad from './src/Views/Ad/Ad'
 import TagsList from './src/Views/Tags/TagsList'
 import _Date from './src/Views/Date_Time/_Date'
 import _Time from './src/Views/Date_Time/_Time'
-import SignUpForm from './src/Views/SignUp/SignUpForm'
-import HotJobs from './src/Views/Swip/Jobs/HotJobs'
+import SignUp from './src/Views/SignUp/SignUp'
+import Jobs from './src/Views/Swip/Jobs/Jobs'
+import HowItWork from './src/Views/Help/HowItWork'
 
 const Routes = StackNavigator(
   {
@@ -23,10 +24,11 @@ const Routes = StackNavigator(
     TagsList:   { screen: TagsList },
     _Date:   { screen: _Date },
     _Time:   { screen: _Time },
-    SignUpForm:  { screen: SignUpForm },
-	HotJobs: { screen: HotJobs },
+    SignUp:  { screen: SignUp },
+    Jobs: { screen: Jobs },
+    HowItWork: {screen: HowItWork},
   },
-  { initialRouteName: 'Login'}
+  { initialRouteName: 'Jobs'}
 );
 
 export default Routes;

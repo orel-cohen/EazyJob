@@ -15,7 +15,7 @@ const DATA = [
     { id: 8, text: 'Job #8', boss: 'Boss #8', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
 ];
 
-export default class HotJobs extends React.Component {
+export default class Jobs extends React.Component {
 
     //call every time when we will take something from Deck
     renderCard(item) {
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
 
 });

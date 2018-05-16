@@ -30,7 +30,7 @@ var userList = {
 
 }
 var selectedItems=[];
-export default class test extends React.Component{
+export default class TagsList extends React.Component{
     constructor(props) {
         super(props);
         try {
@@ -39,10 +39,10 @@ export default class test extends React.Component{
         
         this.signup = this.signup.bind(this);
         this.state={
-            email: this.props.navigation.state.params.email,
-            password: this.props.navigation.state.params.password,
-            fName: this.props.navigation.state.params.fName,
-            pNumber: this.props.navigation.state.params.pNum,
+            email: '',//this.props.navigation.state.params.email,
+            password: '', //this.props.navigation.state.params.password,
+            fName: '',//this.props.navigation.state.params.fName,
+            pNumber: '',//this.props.navigation.state.params.pNum,
             succesToCraete:false
         }
         

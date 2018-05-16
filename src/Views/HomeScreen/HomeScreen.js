@@ -53,7 +53,7 @@ export default class HomeScreen extends React.Component {
                         <MaterialIcons name="face" size={75} color="#ffffff" backgroundColor="#4286f4"/>
                         <Text style={styles.textView}>Profile</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('HotJobs')}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Jobs')}>
                         <MaterialCommunityIcons name="emoticon-excited" size={75} color="#ffffff" title="My Jobs"/>
                         <Text style={styles.textView}>EazyJob</Text>
                     </TouchableOpacity>
@@ -73,33 +73,3 @@ export default class HomeScreen extends React.Component {
         );
     }
 }
-
-
-const styles = StyleSheet.create({
-    mainStyle: {
-        backgroundColor: '#3498db',
-        flex:1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        flexDirection: 'column',
-        
-    },
-    lineStyle:{
-        flex:1,
-        flexDirection: 'row',
-        //alignItems: 'center',
-        justifyContent: 'space-around',
-        paddingVertical:30
-    },
-    textView:{
-        color:'#ffffff',
-        textAlign: 'center'
-    },
-    buttonStyle: {
-        flex:1,
-        flexDirection: 'column',
-        //justifyContent: 'center',
-        alignItems: 'center',
-        
-    }
-})
