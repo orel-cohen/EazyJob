@@ -1,74 +1,105 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, Text, Alert,View, } from 'react-native';
+import { StyleSheet, Button, ScrollView, Text, View, TextInput, TouchableOpacity, AppRegistry, Alert } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
-import * as firebase from "firebase";
 import { StackNavigator } from 'react-navigation';
 import Firebase from '../../Firebase/Firebase';
 import DismissKeyboard from "dismissKeyboard";
+import * as firebase from "firebase";
 //var { width, height } = Dimensions.get('window');
 
+//order the list from addad.js
 var userList = {
-  "123":"Berman",
-  "124":"Waitress",
-  "125":"Private lessons",
-  "126":"With a car",
-  "127":"No car",
-  "127":"Working from home",
-  "129":"Work at night",
-  "130":"Work in the morning",
-  "131":"Gardening",
-  "132":"Babysitter",
-  "133":"Porterage",
-  "134":"Warehouse workers",
-  "135":"Craftsmanship",
-  "136":"Shipments",
-  "137":"Salesmanship",
-  "138":"Cleanliness",
-  "139":"Cookery",
-  "140":"Fast food",
-  "141":"test"
+  "Renovations":"Renovations",
+  "Security":"Security/Ushers",
+  "Bartender":"Bartender",
+  "Animals":"Animals (Keep or Trip)",
+  "Babysitter":"Babysitter",
+  "Home":"Working from home",
+  "Shipments":"Shipments",
+  "Volunteering":"Volunteering (for free)",
+  "Inventory":"Inventory counts/arrangement",
+  "Porterage":"Porterage",
+  "Private":"Private lessons",
+  "Translate":"Translate Articles",
+  "Gardening":"Gardening",
+  "Cleaning":"Cleaning",
+  "Kitchen":"Kitchen",
+  "Events":"Events (moderator, clown) ",
+   "Waiters": "Waiters", 
+   "Photographer":"Photographer",
+    "DJ": "DJ",
+    "MakeUp":"MakeUp",
+  "Car":"Car owner",
+  "Night":"Work in nights",
+  "Weekend":"Work in weekend"
 
 }
 var selectedItems=[];
+var weDoIt=false;
 export default class TagsList extends React.Component{
     constructor(props) {
         super(props);
         try {
             Firebase.initialise();
             } catch (error) {}
-        
+       
         this.signup = this.signup.bind(this);
         this.state={
-            email: '',//this.props.navigation.state.params.email,
-            password: '', //this.props.navigation.state.params.password,
-            fName: '',//this.props.navigation.state.params.fName,
-            pNumber: '',//this.props.navigation.state.params.pNum,
-            succesToCraete:false
+            email: this.props.navigation.state.params.email,
+            password: this.props.navigation.state.params.password,
+            fName: this.props.navigation.state.params.fullName,
+            pNumber: this.props.navigation.state.params.pNum,
+            //succesToCraete:false,
+            //flag:false,
+            itemToSub:[],
+            favorite: ['0'],
+            liked:['0'],
+            disliked:['0'],
+            ads:['0']
         }
-        
+       
+ 
     }
     static navigationOptions = {
         header: null // !!! Hide Header
       }
-      async signup() {
-        if(selectedItems.length==0)
-        {Alert.alert("Hi","Looks like you have not selected any options.")}else{
+    async signup() {
+       
             DismissKeyboard();
-            var database = firebase.database();
+           
             try {
+               
+                //var succesToCraete=0;
+                console.log("mail "+this.state.email+ "\n pass: "+this.state.password);
                 firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
                 .then(function(user) {
-                    this.setState({
-                        succesToCraete:true
-                    })
+                    weDoIt=true;
+                    console.log("we in!");
+                    //succesToCraete=true;
+                    //this.setState({flag:true});
+                    //console.log(this.state.flag)
+                    //console.log(succesToCraete+" in create");    
                 });
-                if(succesToCraete==true){
-                    var userId=firebase.auth().currentUser.uid;            
+               
+                console.log("res: "+weDoIt);
+                //true==true
+                if(true==true){
+                    var database = firebase.database();
+                    console.log("succesToCreate");
+                    //print the info
+                    console.log("fname: "+this.state.fName)
+                    var userId=firebase.auth().currentUser.uid;
+                    console.log(userId)            
                     firebase.database().ref('users/'+ userId).set({
+                       
                         full_name: this.state.fName,
                         email: this.state.email,
-                        //profile_picture : imageUrl
-                        phone_num: this.state.pNumber
+                        tags:this.state.itemToSub,
+                        phone_num: this.state.pNumber,
+                        favorite: this.state.favorite,
+                        liked: this.state.liked,
+                        disliked:this.state.disliked,
+                        ads:this.state.ads
                     });
                     Alert.alert('Welcome:)','Now you can start counting \nmoney for the weekend.. ;D');
                     //TODO : TIMEOUT? FOR WHAT??
@@ -76,24 +107,22 @@ export default class TagsList extends React.Component{
                         this.props.navigation.navigate('HomeScreen')
                     }, 1500);
                 }
-                
-
+ 
             } catch (error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                Alert.alert(errorCode.toString());
-                Alert.alert(errorMessage.toString());
-                // ...
-                // this.setState({
-                //     response: error.toString()
-                // })
-                // Alert.alert(
-                //     '!'+ errorMessage)
+                Alert.alert("",errorCode);
+                Alert.alert("",errorMessage);
+                //delete account if DB not succes
             }
-        }
-
+       
+ 
     }
+    // if(selectedItems.length==0)
+    //     {Alert.alert("Hi","Looks like you have not selected any options.")}else{
+    //     }
+    // }
     render(){
         const { navigate } = this.props.navigation;
         return(
@@ -108,17 +137,16 @@ export default class TagsList extends React.Component{
                         placeholderTextColor={'#fff'}
                         returnValue={"label"} // label or value
                         callback={(res)=>
-                            { 
-                                if(res.length>7)
+                            {
+                                /*if(res.length>7)
                                 {
                                     Alert.alert('Hold On!','You can choose a maximum 7 options');
                                     res.splice(-1,1);
-
-                                }
+                                   
+                                }*/
                                 this.state.itemToSub=res;
-                                console.log(this.state.itemToSub);
                                 selectedItems=res;
-                                console.log(selectedItems)
+                               
                             }} // callback, array of selected items
                         rowBackgroundColor={"#fff"}
                         rowHeight={40}

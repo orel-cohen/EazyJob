@@ -5,6 +5,8 @@ import {MaterialIcons,MaterialCommunityIcons,Entypo} from '@expo/vector-icons';
 import * as firebase from "firebase";
 import Firebase from '../../Firebase/Firebase';
 
+//import styles from './HomeScreenstyle'
+
 var username="empty";
 export default class HomeScreen extends React.Component {
     constructor(props) {
@@ -23,7 +25,11 @@ export default class HomeScreen extends React.Component {
     // {
         
     //     var database = firebase.database();
-    //     var userId = firebase.auth().currentUser.uid;
+
+    ////////////////
+    //     var userId = firebase.auth().currentUser.uid; getting the userID
+/////////////
+
     //     firebase.database().ref('users/' + userId).once('value').then(function(snapshot) {
     //         username = (snapshot.val() && snapshot.val().full_name) || 'Anonymous';
     //         console.log(username)
@@ -67,9 +73,42 @@ export default class HomeScreen extends React.Component {
                         <Entypo name="megaphone" size={75} color="#ffffff" backgroundColor="#4286f4" title="Post Ad"/>
                         <Text style={styles.textView}>Post{'\n'}EazyJob</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('AddAd')}>
+                        <MaterialCommunityIcons name="mailbox" size={75} color="#ffffff" title="publish add"/>
+                        <Text style={styles.textView}>Messege</Text>
+                    </TouchableOpacity>
                 </View>
                 
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    mainStyle: {
+        backgroundColor: '#3498db',
+        flex:1,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        flexDirection: 'column',
+        
+    },
+    lineStyle:{
+        flex:1,
+        flexDirection: 'row',
+        //alignItems: 'center',
+        justifyContent: 'space-around',
+        paddingVertical:30
+    },
+    textView:{
+        color:'#ffffff',
+        textAlign: 'center'
+    },
+    buttonStyle: {
+        flex:1,
+        flexDirection: 'column',
+        //justifyContent: 'center',
+        alignItems: 'center',
+        
+    }
+})

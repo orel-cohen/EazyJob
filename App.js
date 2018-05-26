@@ -13,6 +13,7 @@ import _Time from './src/Views/Date_Time/_Time'
 import SignUp from './src/Views/SignUp/SignUp'
 import Jobs from './src/Views/Swip/Jobs/Jobs'
 import HowItWork from './src/Views/Help/HowItWork'
+import AddAd from './src/Views/AddAd/AddAd'
 
 const Routes = StackNavigator(
   {
@@ -27,8 +28,9 @@ const Routes = StackNavigator(
     SignUp:  { screen: SignUp },
     Jobs: { screen: Jobs },
     HowItWork: {screen: HowItWork},
+    AddAd: {screen: AddAd},
   },
-  { initialRouteName: 'Jobs'}
+  { initialRouteName: 'AddAd'}
 );
 
 export default Routes;
