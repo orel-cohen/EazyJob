@@ -12,10 +12,7 @@ export default class SignUpForm extends React.Component{
         try {
             Firebase.initialise();
             } catch (error) {}
-        
-        this.signup = this.signup.bind(this);
-        this.checkData=this.checkData.bind(this);
-        
+        this.transferData=this.transferData.bind(this);
         this.state = {
             email: "",
             emailValdate:true,
@@ -25,9 +22,20 @@ export default class SignUpForm extends React.Component{
             fNameValdate:true,
             pNumber:"",
             pNumberValdate:true,
-            response: ""
+            response: "",
+            succesToCraete:false,
+            selectedSub:this.props.navigation.state.params.selectedSub
         };
     }
+    static navigationOptions = ({ navigation }) => {
+        //header: (props)=>(title:name)
+         const { params } = navigation.state;
+         //console.log(this.state.selectedSub)
+        //console.log(this.props.navigation.getParam())
+        //  return {
+        //     title:params ? params.x : 'none'
+        //  }
+    };
     validate(text,type)
     {
         fName= /^([A-Z]|[a-z])([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/
@@ -79,54 +87,7 @@ export default class SignUpForm extends React.Component{
             }
         }
     }
-    async checkData(){
-        
-        //var dataFlag=false;
-        //check data
-        // if(this.state.email==""||this.state.password==""||this.state.fName==""||this.state.pNumber==""){
-        //     Alert.alert('A little problem','We need to know a few more details..');
-        // }else{this.signup}
-        
-    }
     
-    async signup() {
-
-        DismissKeyboard();
-        var database = firebase.database();
-        try {
-            firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(function(user) {
-            });
-            var userId=firebase.auth().currentUser.uid;            
-            firebase.database().ref('users/'+ userId).set({
-                full_name: this.state.fName,
-                email: this.state.email,
-                //profile_picture : imageUrl
-                phone_num: this.state.pNumber
-            });
-            Alert.alert('Welcome:)','Now you can start counting \nmoney for the weekend.. ;D');
-            //TODO : TIMEOUT? FOR WHAT??
-            setTimeout(() => {
-                this.props.navigation.navigate('HomeScreen')
-            }, 1500);
-            
-            
-
-        } catch (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            Alert.alert(errorCode.toString());
-            Alert.alert(errorMessage.toString());
-            // ...
-            // this.setState({
-            //     response: error.toString()
-            // })
-            // Alert.alert(
-            //     '!'+ errorMessage)
-        }
-
-    }
     render(){
         return(
             <View style={styles.container}>
@@ -185,12 +146,29 @@ export default class SignUpForm extends React.Component{
                 onChangeText={(password) =>{ this.setState({password}); this.validate(password,'password')}}/>
                 <Text> *Password with minimum eight characters at least 1 letter and 1 number  </Text>
                 <Button 
-                onPress = {this.signup} //()=> this.props.navigation.navigate('TagsList') }
+                onPress = {this.transferData}
                  title = 'Continue'/>
                 </View>
         );
     }
-    
+    async transferData()
+    {
+        if(this.state.password!="" && this.state.fName!="" && this.state.email!="" && this.state.pNumber!="")
+        {
+            if(this.state.emailValdate==true && this.state.fNameValdate==true && this.state.passwordValdate && this.state.pNumberValdate==true)
+            {
+                setTimeout(() => {
+                this.props.navigation.navigate('TagsList',{email:this.state.email,pNum:this.state.pNumber,password:this.state.password,fullName:this.state.fName})
+            }, 1500);
+            }else{
+                Alert.alert("Hi, little problem","One or more of the data you entered is invalid");
+            }
+        }else{
+            Alert.alert("Hi, little problem","One or more empty fields");
+        }
+        
+         
+    }
     //onPress = () => {
     //    Alert.alert("OK")
 //this.props.navigation.navigate('SignUpTags')
@@ -201,6 +179,7 @@ export default class SignUpForm extends React.Component{
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#3498db',
         padding: 15,
         alignItems:'center',
         justifyContent:'flex-end',

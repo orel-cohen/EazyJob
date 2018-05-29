@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { View, Animated, PanResponder, Dimensions } from 'react-native';
+import {
+    View,
+    Animated,
+    PanResponder,
+    Dimensions,
+    LayoutAnimation,
+    UIManager
+  } from 'react-native';
+import { Button } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 //make the rotate to be work as the screen size in wach phone 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -8,7 +17,7 @@ const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 //the value of ms that the card will move
 const SWIPE_OUT_DURATION = 250;
 
-export default class Deck extends Component {
+class Deck extends Component {
     //default function to make the app works whe card swip to a side when we make a real function with the same name the default will not work
     static defaultProps = {
         onSwipeRight: () => { },
@@ -29,7 +38,7 @@ export default class Deck extends Component {
             //gesture - the details where the finger move like speed and position
             onPanResponderMove: (event, gesture) => {
                 //update the position
-                position.setValue({ x: gesture.dx, y: gesture.dy })
+                position.setValue({ x: gesture.dx, y: gesture.dy });
             },
             //function that activate when the finger is release from the screen and see where the card is 
             onPanResponderRelease: (event, gesture) => {
@@ -45,6 +54,17 @@ export default class Deck extends Component {
 
         this.state = { panResponder, position, index: 0 };
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data !== this.props.data) {
+          this.setState({ index: 0 });
+        }
+      }
+    
+      componentWillUpdate() {
+        UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+        LayoutAnimation.spring();
+      }
 
     //help function move the card right/left from the screen
     forceSwipe(direction) {
@@ -102,24 +122,52 @@ export default class Deck extends Component {
                 return (
                     <Animated.View
                         key={item.id}
-                        style={this.getCardStyle()}
+                        style={[this.getCardStyle(), styles.cardStyle, { zIndex: 99 }]}
                         {...this.state.panResponder.panHandlers} //the '...' is for separate the cards from each other
                     >
                         {this.props.renderCard(item)}
+                        <Button
+                        onPress={()=> this.forceSwipe('right')}
+                        large
+                        icon={{name: 'attach-money'}}
+                        title='Want it' />
+                        <Button
+                        onPress={()=> this.forceSwipe('left')}
+                        large
+                        icon={{name: 'money-off'}}
+                        title='Pass it' />
                     </Animated.View>
                 );
             }
 
-            return this.props.renderCard(item);
-        });
+            return (
+                <Animated.View
+                    key= {item.id} 
+                    style={[styles.cardStyle, { top: 10 * (i - this.state.index), zIndex: 5 }]}
+                >
+                    {this.props.renderCard(item)}
+                    
+                    
+                </Animated.View>
+            );
+        }).reverse();
     }
 
     render() {
         return (
             <View>
                 {this.renderCards()}
+
             </View>
         );
     }
 
 }
+const styles = {
+    cardStyle: {
+        position: 'absolute',
+        width: SCREEN_WIDTH
+    }
+}
+
+export default Deck;
