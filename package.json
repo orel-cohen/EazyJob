@@ -26,8 +26,11 @@
     "react-native-datepicker": "^1.7.1",
     "react-native-elements": "^0.19.1",
     "react-native-google-signin": "^0.12.0",
+    "react-native-multiple-select": "^0.4.4",
     "react-native-multiple-select-list": "^1.0.4",
+    "react-native-sectioned-multi-select": "^0.4.7",
     "react-native-ui-xg": "0.0.6",
-    "react-navigation": "^1.5.11"
+    "react-navigation": "^1.5.11",
+    "redux": "^4.0.0"
   }
 }

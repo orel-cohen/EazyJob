@@ -19,6 +19,7 @@ export default class Ad extends React.Component {
     }
 
     //likePress = () => {
+<<<<<<< HEAD
         /*Increase Likes for post*/
       /*  if (this.props.isLiked == 0) {
             this.props.likes++
@@ -33,6 +34,22 @@ export default class Ad extends React.Component {
     }*/
     //commentPress = () => {
         /* Insert new comment */
+=======
+    /*Increase Likes for post*/
+    /*  if (this.props.isLiked == 0) {
+          this.props.likes++
+          this.props.isLiked = 1
+      }*/
+    /*Decrease likes for post*/
+    /*else {
+        this.props.likes--
+        this.props.isLiked = 0
+    }
+
+}*/
+    //commentPress = () => {
+    /* Insert new comment */
+>>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
     //}
 
     render() {

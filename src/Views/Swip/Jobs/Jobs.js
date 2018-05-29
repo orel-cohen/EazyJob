@@ -23,7 +23,7 @@ export default class Jobs extends React.Component {
             <Card
                 key={item.id}
                 title={item.text}>
-                <Image source= {{uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg'}}/>
+                <Image source={{ uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' }} />
                 <Text>
                     {item.boss}
                 </Text>
