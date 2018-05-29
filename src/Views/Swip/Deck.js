@@ -6,7 +6,7 @@ import {
     Dimensions,
     LayoutAnimation,
     UIManager
-  } from 'react-native';
+} from 'react-native';
 import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -57,14 +57,14 @@ class Deck extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
-          this.setState({ index: 0 });
+            this.setState({ index: 0 });
         }
-      }
-    
-      componentWillUpdate() {
+    }
+
+    componentWillUpdate() {
         UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
         LayoutAnimation.spring();
-      }
+    }
 
     //help function move the card right/left from the screen
     forceSwipe(direction) {
@@ -127,27 +127,27 @@ class Deck extends Component {
                     >
                         {this.props.renderCard(item)}
                         <Button
-                        onPress={()=> this.forceSwipe('right')}
-                        large
-                        icon={{name: 'attach-money'}}
-                        title='Want it' />
+                            onPress={() => this.forceSwipe('right')}
+                            large
+                            icon={{ name: 'attach-money' }}
+                            title='Want it' />
                         <Button
-                        onPress={()=> this.forceSwipe('left')}
-                        large
-                        icon={{name: 'money-off'}}
-                        title='Pass it' />
+                            onPress={() => this.forceSwipe('left')}
+                            large
+                            icon={{ name: 'money-off' }}
+                            title='Pass it' />
                     </Animated.View>
                 );
             }
 
             return (
                 <Animated.View
-                    key= {item.id} 
+                    key={item.id}
                     style={[styles.cardStyle, { top: 10 * (i - this.state.index), zIndex: 5 }]}
                 >
                     {this.props.renderCard(item)}
-                    
-                    
+
+
                 </Animated.View>
             );
         }).reverse();

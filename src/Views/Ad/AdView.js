@@ -19,20 +19,20 @@ export default class Ad extends React.Component {
     }
 
     //likePress = () => {
-        /*Increase Likes for post*/
-      /*  if (this.props.isLiked == 0) {
-            this.props.likes++
-            this.props.isLiked = 1
-        }*/
-        /*Decrease likes for post*/
-        /*else {
-            this.props.likes--
-            this.props.isLiked = 0
-        }
+    /*Increase Likes for post*/
+    /*  if (this.props.isLiked == 0) {
+          this.props.likes++
+          this.props.isLiked = 1
+      }*/
+    /*Decrease likes for post*/
+    /*else {
+        this.props.likes--
+        this.props.isLiked = 0
+    }
 
-    }*/
+}*/
     //commentPress = () => {
-        /* Insert new comment */
+    /* Insert new comment */
     //}
 
     render() {
