@@ -6,11 +6,7 @@ import {
     Dimensions,
     LayoutAnimation,
     UIManager
-<<<<<<< HEAD
-  } from 'react-native';
-=======
 } from 'react-native';
->>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
 import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -61,16 +57,6 @@ class Deck extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
-<<<<<<< HEAD
-          this.setState({ index: 0 });
-        }
-      }
-    
-      componentWillUpdate() {
-        UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-        LayoutAnimation.spring();
-      }
-=======
             this.setState({ index: 0 });
         }
     }
@@ -79,7 +65,6 @@ class Deck extends Component {
         UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
         LayoutAnimation.spring();
     }
->>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
 
     //help function move the card right/left from the screen
     forceSwipe(direction) {
@@ -142,17 +127,6 @@ class Deck extends Component {
                     >
                         {this.props.renderCard(item)}
                         <Button
-<<<<<<< HEAD
-                        onPress={()=> this.forceSwipe('right')}
-                        large
-                        icon={{name: 'attach-money'}}
-                        title='Want it' />
-                        <Button
-                        onPress={()=> this.forceSwipe('left')}
-                        large
-                        icon={{name: 'money-off'}}
-                        title='Pass it' />
-=======
                             onPress={() => this.forceSwipe('right')}
                             large
                             icon={{ name: 'attach-money' }}
@@ -162,28 +136,18 @@ class Deck extends Component {
                             large
                             icon={{ name: 'money-off' }}
                             title='Pass it' />
->>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
                     </Animated.View>
                 );
             }
 
             return (
                 <Animated.View
-<<<<<<< HEAD
-                    key= {item.id} 
-                    style={[styles.cardStyle, { top: 10 * (i - this.state.index), zIndex: 5 }]}
-                >
-                    {this.props.renderCard(item)}
-                    
-                    
-=======
                     key={item.id}
                     style={[styles.cardStyle, { top: 10 * (i - this.state.index), zIndex: 5 }]}
                 >
                     {this.props.renderCard(item)}
 
 
->>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
                 </Animated.View>
             );
         }).reverse();

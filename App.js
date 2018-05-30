@@ -15,7 +15,9 @@ import Jobs from './src/Views/Swip/Jobs/Jobs'
 import HowItWork from './src/Views/Help/HowItWork'
 import AddAd from './src/Views/AddAd/AddAd'
 import Profile from './src/Views/Profile/Profile'
-import Contact_Us from './src/Contact_Us/Contact_Us'
+import Contact_Us from './src/Views/Contact_Us/Contact_Us'
+import Settings from './src/Views/Settings/Settings'
+
 
 const Routes = StackNavigator(
   {
@@ -38,7 +40,7 @@ const Routes = StackNavigator(
     Search: { screen: Search },
     FavoriteJobs: { screen: FavoriteJobs },
   },
-  { initialRouteName: 'HomeScreen' }
+  { initialRouteName: 'Login' }
 );
 
 export default Routes;
