@@ -42,16 +42,9 @@ export default class Login extends React.Component {
         };
 
         this.login = this.login.bind(this);
-<<<<<<< HEAD
-        this.signInWithGoogle=this.signInWithGoogle.bind(this);
-    }
-    signInWithGoogle()
-    {
-=======
         this.signInWithGoogle = this.signInWithGoogle.bind(this);
     }
     signInWithGoogle() {
->>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
         console.log("we in!");
         //Alert.alert("Hi:)","SignUp with Google is currently unavailable and will be available soon")
 
@@ -102,15 +95,9 @@ export default class Login extends React.Component {
 
     static navigationOptions = {
         header: null // !!! Hide Header
-<<<<<<< HEAD
       }
 
       getInitialView() {
-=======
-    }
-
-    getInitialView() {
->>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -150,7 +137,6 @@ export default class Login extends React.Component {
                 // });
                 var database = firebase.database();
                 var userId = firebase.auth().currentUser.uid;
-<<<<<<< HEAD
                 var username="empty"
                 firebase.database().ref('users/' + userId).once('value').then(function(snapshot) {
                     username = (snapshot.val() && snapshot.val().full_name) || 'Anonymous';
@@ -160,17 +146,6 @@ export default class Login extends React.Component {
                 });
                 setTimeout(() => {
                     this.props.navigation.navigate('HomeScreen' ,{currUserID: userId}  )
-=======
-                var username = "empty"
-                firebase.database().ref('users/' + userId).once('value').then(function (snapshot) {
-                    username = (snapshot.val() && snapshot.val().full_name) || 'Anonymous';
-                    console.log(username + " login")
-                    //this.props.navigation.setParams({otherParam:username+'!'})
-                    // ...F
-                });
-                setTimeout(() => {
-                    this.props.navigation.navigate('HomeScreen', { namePar: username })
->>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
                 }, 1500);
 
             } catch (error) {
@@ -183,7 +158,6 @@ export default class Login extends React.Component {
 
     render() {
         const { navigate } = this.props.navigation;
-<<<<<<< HEAD
         if (true){  //  this.state.userLoaded==false) {
         return(  
             <KeyboardAvoidingView behavior="padding" style={styles.loginContainer}>
@@ -237,61 +211,6 @@ export default class Login extends React.Component {
             
         );
     }else return <HomeScreen/>;
-=======
-        if (true) {  //  this.state.userLoaded==false) {
-            return (
-                <KeyboardAvoidingView behavior="padding" style={styles.loginContainer}>
-                    <Text style={styles.titleContainer}> EazyJob</Text>
-                    <View style={styles.container}>
-                        <TextInput
-                            style={[styles.input,
-                            !this.state.emailValdate ? styles.error : null]}
-                            underlineColorAndroid='transparent' //for to hide underline
-                            placeholder="email"
-                            returnKeyType="next"
-                            onSubmitEditing={() => this.passwordInput.focus()}
-                            keyboardType="email-address"
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            //onChangeText={this.handleEmail}
-                            onChangeText={(email) => { this.setState({ email }); this.validate(email, 'email') }}
-                            placeholderTextColor="rgba(255,255,255,0.7)"
-                        />
-                        <TextInput
-                            style={[styles.input,
-                            !this.state.passwordValdate ? styles.error : null]}
-                            underlineColorAndroid='transparent' //for to hide underline
-                            placeholder="password"
-                            returnKeyType="go"
-                            secureTextEntry
-                            //onChangeText={this.handlePass}
-                            onChangeText={(password) => { this.setState({ password }); this.validate(password, 'password') }}
-                            placeholderTextColor="rgba(255,255,255,0.7)"
-                            ref={(input) => this.passwordInput = input}
-                        />
-
-                        <TouchableOpacity onPress={this.login} style={styles.buttonContainer}>
-                            <Text style={styles.buttonText}>LOGIN</Text>
-                        </TouchableOpacity>
-
-                    </View>
-                    <Text
-                        onPress={() => this.props.navigation.navigate('SignUp', { selectedSub: "none" })}//this.signup}
-                        style={styles.signupStyle}
-                    >
-                        Not a member? SignUp
-                </Text>
-                    <TouchableOpacity onPress={this.signInWithGoogle}>
-                        <Image
-                            source={require('../../Assets/google.png')} />
-                    </TouchableOpacity>
-
-                </KeyboardAvoidingView>
-
-
-            );
-        } else return <HomeScreen />;
->>>>>>> 69d674576967211db7f0f20d634638cfe31868fd
     }
 }
 

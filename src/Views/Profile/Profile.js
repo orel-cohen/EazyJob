@@ -135,8 +135,8 @@ export default class Profile extends React.Component {
                             source={pic}
                         />
                         <View>
-                            <Text>{this.state.fName}</Text>
-                            <Text>{this.state.lName}</Text>
+                            <Text style={styles.mainRowText}>{this.state.fName}</Text>
+                            <Text style={styles.mainRowText}>{this.state.lName}</Text>
                             
                             {/*console.log("_____FULLNAME 666: " , name)/*console.log("\n\nFName = " , name[0] , " LNAME = " , name[1])*/}
                            
