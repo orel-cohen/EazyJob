@@ -6,7 +6,9 @@ import * as firebase from "firebase";
 
 
 export default class SignUp extends React.Component {
-
+    static navigationOptions = {
+        title: 'Add Ad',
+    };
     constructor(props) {
         super(props);
         try {
@@ -47,8 +49,7 @@ export default class SignUp extends React.Component {
         }
         else {
             try {
-                //var userId=firebase.auth().currentUser.uid;
-                userId = "QeDocr87gOc36FgMgD3TUeKxgVp2"
+                userId = firebase.auth().currentUser.uid;
                 ref = firebase.database().ref('jobs/').push()
                 let newAd = {
                     bossId: userId,
@@ -225,9 +226,11 @@ export default class SignUp extends React.Component {
                 <Text>Start:</Text>
                 <DatePicker
                     style={{ width: 200 }}
-                    startTime={this.state.time}//fix that
+                    date={this.state.startTime}
                     mode="time"
-                    format="HH:MM"
+                    format="LT"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
                     showIcon={false}
                     customStyles={{
                         dateIcon: {
@@ -240,13 +243,18 @@ export default class SignUp extends React.Component {
                             marginLeft: 36
                         }
                     }}
-                    onDateChange={(startTimet) => { this.setState({ startTime }); }} />
+                    onDateChange={startTime => {
+                        this.setState({ startTime: startTime });
+                    }}
+                />
                 <Text>End:</Text>
                 <DatePicker
                     style={{ width: 200 }}
-                    endTime={this.state.time}//fix that
+                    date={this.state.endTime}
                     mode="time"
-                    format="HH:MM"
+                    format="LT"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
                     showIcon={false}
                     customStyles={{
                         dateIcon: {
@@ -259,7 +267,7 @@ export default class SignUp extends React.Component {
                             marginLeft: 36
                         }
                     }}
-                    onDateChange={(endTime) => { this.setState({ endTime }); }} />
+                    onDateChange={(endTime) => { this.setState({ endTime: endTime }); }} />
                 <Text>Please choose at least 1 categories.</Text>
                 <Text>Don't choose the same categories.</Text>
 

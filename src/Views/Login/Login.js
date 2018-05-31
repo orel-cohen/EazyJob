@@ -196,7 +196,7 @@ export default class Login extends React.Component {
                     
                 </View>
                 <Text 
-                    onPress={()=> this.props.navigation.navigate('SignUpForm',{selectedSub:"none"})}//this.signup}
+                    onPress={()=> this.props.navigation.navigate('SignUp',{selectedSub:"none"})}//this.signup}
                     style={styles.signupStyle}
                 >
                 Not a member? SignUp

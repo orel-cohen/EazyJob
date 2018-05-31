@@ -10,6 +10,9 @@ import { Ionicons } from '@expo/vector-icons';
 
 var username = "empty";
 export default class HomeScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Welcome',
+      };
     constructor(props) {
         super(props);
         try {
@@ -18,9 +21,10 @@ export default class HomeScreen extends React.Component {
         //this.getName = this.getName.bind(this);
         this.state={
             nameToDisplay: "",
-            currUserID: this.props.navigation.state.params.currUserID,
+            //currUserID: firebase.auth().currentUser.uid,
         }
         //this.getName();
+        //console.log(this.state.currUserID)
     }
    
     // getName()
@@ -41,35 +45,29 @@ export default class HomeScreen extends React.Component {
     //     //  get empty username, why?
     //     //  Alert.alert(username,"test");
     // }
-    static navigationOptions = ({ navigation }) => {
+    /*static navigationOptions = ({ navigation }) => {
         //header: (props)=>(title:name)
          const { params } = navigation.state;
         
          return {
            title: params ? 'Hi '+params.namePar : 'Welcome',
          }
-    };
+    };*/
+    //////////////////////////////////////////////////////
+    //put full name name//<Text>{this.state.currUserID}</Text>
+////////////////////////////////////////////
     render(){
         return(
             
             <View style={styles.mainStyle}>
                 <View style={styles.lineStyle}>
-                    {/*<Text style={styles.textView}>Logo here</Text>*/}
-                    <Logo/>
+                    <Text style={styles.textView}>Logo here</Text>
                 </View>
-                <Text>{this.state.currUserID}</Text>
                 <View style={styles.lineStyle}>
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Profile', {currUserID: this.state.currUserID, isCurrUser: true})}>
-                        <MaterialIcons name="face" size={75} color="#ffffff" backgroundColor="#4286f4"/>
+                        <MaterialIcons name="face" size={60} color="#ffffff" backgroundColor="#4286f4"/>
                         <Text style={styles.textView}>Profile</Text>
-                    </TouchableOpacity>
-                   { <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Contact_Us', {currUserID: 'TEST'/*this.state.currUserID*/})}>
-                        <MaterialCommunityIcons name="mailbox" size={75} color="#ffffff" title="My Jobs"/>
-                        <Text style={styles.textView}>Contact Us</Text>
-                        </TouchableOpacity>}
-                
-                
-                
+                    </TouchableOpacity>                
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('AddAd')}>
                         <Entypo name="pin" size={60} color="#ffffff" title="Add Ad" />
                         <Text style={styles.textView}>Add Ad</Text>

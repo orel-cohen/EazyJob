@@ -40,6 +40,14 @@ export default class Settings extends React.Component {
     //     //  get empty username, why?
     //     //  Alert.alert(username,"test");
     // }
+    signOutUser = async () => {
+        try {
+            await firebase.auth().signOut();
+            this.props.navigation.navigate('Login');
+        } catch (e) {
+            console.log(e);
+        }
+    }
     static navigationOptions = ({ navigation }) => {
         //header: (props)=>(title:name)
         const { params } = navigation.state;
@@ -66,7 +74,7 @@ export default class Settings extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.lineStyle}>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate()}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.signOutUser()}>
                         <MaterialCommunityIcons name="close-box" size={60} color="#ffffff" backgroundColor="#4286f4" title="Settings" />
                         <Text style={styles.textView}>Exit</Text>
                     </TouchableOpacity>

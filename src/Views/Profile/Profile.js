@@ -23,7 +23,9 @@ import { Content } from 'native-base';
 //var database = firebase.database();
 var fullName = "EMPTY STRING";
 export default class Profile extends React.Component {
-
+    static navigationOptions = {
+        title: 'Profile',
+      };
     constructor(props) {
         super(props);
         try {
