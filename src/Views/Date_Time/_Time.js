@@ -5,8 +5,9 @@ import DatePicker from 'react-native-datepicker';
 export default class DateZona extends React.Component {
    constructor(props){
     super(props)
-    this.state = {time:"00:00"}
+    this.state = {newTime:"00:00"}
   }
+
   render() {
     return (
       <View>
@@ -27,7 +28,7 @@ export default class DateZona extends React.Component {
               marginLeft: 36
               }
           }}
-          onDateChange={(time) => {this.setState({time: time})}}
+          onDateChange={(time) => {this.setState({newTime: time})}}
         />
       </View>
     );

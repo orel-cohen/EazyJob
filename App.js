@@ -16,29 +16,34 @@ import HowItWork from './src/Views/Help/HowItWork'
 import AddAd from './src/Views/AddAd/AddAd'
 import Profile from './src/Views/Profile/Profile'
 import Contact_Us from './src/Contact_Us/Contact_Us'
+import Settings from './src/Views/Settings/Settings'
+import HotJobs from './src/Views/HotJobs/HotJobs'
+import Search from './src/Views/Search/Search'
+import FavoriteJobs from './src/Views/FavoriteJobs/FavoriteJobs'
+
 
 const Routes = StackNavigator(
   {
     Login: { screen: Login },
     Settings: { screen: Settings },
     HomeScreen: { screen: HomeScreen },
-    Logo:       { screen: Logo },
-    CreateAd:   { screen: CreateAd },
-    Ad:         { screen: Ad },
-    TagsList:   { screen: TagsList },
-    _Date:      { screen: _Date },
-    _Time:      { screen: _Time },
-    SignUp:     { screen: SignUp },
-    Jobs:       { screen: Jobs },
-    HowItWork:  { screen: HowItWork},
-    AddAd:      { screen: AddAd},
-    Profile:    { screen: Profile },
+    Logo: { screen: Logo },
+    CreateAd: { screen: CreateAd },
+    Ad: { screen: Ad },
+    TagsList: { screen: TagsList },
+    _Date: { screen: _Date },
+    _Time: { screen: _Time },
+    SignUp: { screen: SignUp },
+    Jobs: { screen: Jobs },
+    HowItWork: { screen: HowItWork },
+    AddAd: { screen: AddAd },
+    Profile: { screen: Profile },
     Contact_Us: { screen: Contact_Us },
     HotJobs: { screen: HotJobs },
     Search: { screen: Search },
     FavoriteJobs: { screen: FavoriteJobs },
   },
-  { initialRouteName: 'HomeScreen' }
+  { initialRouteName: 'Login' }
 );
 
 export default Routes;

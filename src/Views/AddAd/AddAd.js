@@ -47,8 +47,7 @@ export default class SignUp extends React.Component {
         }
         else {
             try {
-                //var userId=firebase.auth().currentUser.uid;
-                userId = "QeDocr87gOc36FgMgD3TUeKxgVp2"
+                var userId=firebase.auth().currentUser.uid;
                 ref = firebase.database().ref('jobs/').push()
                 let newAd = {
                     bossId: userId,
@@ -240,7 +239,7 @@ export default class SignUp extends React.Component {
                             marginLeft: 36
                         }
                     }}
-                    onDateChange={(startTimet) => { this.setState({ startTime }); }} />
+                    onDateChange={(startTimet) => { this.setState({ startTime }); console.log(startTime);}} />
                 <Text>End:</Text>
                 <DatePicker
                     style={{ width: 200 }}
@@ -259,7 +258,7 @@ export default class SignUp extends React.Component {
                             marginLeft: 36
                         }
                     }}
-                    onDateChange={(endTime) => { this.setState({ endTime }); }} />
+                    onDateChange={(endTime) => { this.setState({ endTime }); console.log(endTime);}} />
                 <Text>Please choose at least 1 categories.</Text>
                 <Text>Don't choose the same categories.</Text>
 

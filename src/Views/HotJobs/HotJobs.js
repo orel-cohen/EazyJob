@@ -123,13 +123,20 @@ export default class HotJobs extends React.Component {
     //validate inputs//
     ///////////////////
     async JobSearch() {
+
+        var filtered = await this.filterJobs();
+
         if (this.state.selectedItems && this.state.selectedItems.length > 0) {
             setTimeout(() => {
                 this.props.navigation.navigate('Jobs', { selectedItems: this.state.emaselectedItemsil })
-            }, 100);
+            }, 1500);
         } else {
             Alert.alert("Hi, littele problem", "please choose cities");
         }
+    }
+
+    async filterJobs() {
+
     }
 
     render() {

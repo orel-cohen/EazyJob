@@ -6,7 +6,7 @@ import * as firebase from "firebase";
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 
 const items = [
-    {
+    { // 54 Areas overall.
         name: "North",
         id: "North",
         children: [
@@ -86,7 +86,7 @@ const items = [
         children: [
             { id: "Ness Ziona - Rehovot", name: "Ness Ziona - Rehovot" },
             { id: "Ashdod - Ashkelon Area", name: "Ashdod - Ashkelon Area " },
-            { id: "Gedera - Yavne Area ", name: "Gedera - Yavne Area " },
+            { id: "Gedera - Yavne Area", name: "Gedera - Yavne Area" },
             { id: "Kiryat Gat Area", name: "Kiryat Gat Area" },
             { id: "Shfela", name: "Shfela" }]
     },
@@ -101,6 +101,34 @@ const items = [
             { id: "Southern Dead Sea", name: "Southern Dead Sea" }]
     },
 ]
+/*
+var userList = { // 23 Tags Overall.
+    "Renovations": "Renovations",
+    "Security": "Security/Ushers",
+    "Bartender": "Bartender",
+    "Animals": "Animals (Keep or Trip)",
+    "Babysitter": "Babysitter",
+    "Home": "Working from home",
+    "Shipments": "Shipments",
+    "Volunteering": "Volunteering (for free)",
+    "Inventory": "Inventory counts/arrangement",
+    "Porterage": "Porterage",
+    "Private": "Private lessons",
+    "Translate": "Translate Articles",
+    "Gardening": "Gardening",
+    "Cleaning": "Cleaning",
+    "Kitchen": "Kitchen",
+    "Events": "Events (moderator, clown) ",
+    "Waiters": "Waiters",
+    "Photographer": "Photographer",
+    "DJ": "DJ",
+    "MakeUp": "MakeUp",
+    "Car": "Car owner",
+    "Night": "Work in nights",
+    "Weekend": "Work in weekend"
+
+}*/
+
 export default class Search extends React.Component {
     constructor(props) {
         super(props);
@@ -120,9 +148,8 @@ export default class Search extends React.Component {
             endTime: "",
             endValdate: true,
             succesToCraete: false,
+            jobsList: null,
         };
-
-
     }
     onSelectedItemsChange = (selectedItems) => {
         this.setState({ selectedItems });
@@ -131,13 +158,104 @@ export default class Search extends React.Component {
     //validate inputs//
     ///////////////////
     async JobSearch() {
+        console.log("FIRST LINE IN JobSearch");
+
+        var filtered = await this.filterJobs();
+        console.log("back in job search: ", filtered)
+
         if (this.state.selectedItems && this.state.selectedItems.length > 0) {
             setTimeout(() => {
-                this.props.navigation.navigate('Jobs', { selectedItems: this.state.emaselectedItemsil, startDate: this.state.startDate, endDate: this.state.endDate, startTime: this.state.startTime, endTime: this.state.endTime })
-            }, 100);
+                this.props.navigation.navigate('Jobs', { selectedItems: this.state.selectedItems, startDate: this.state.startDate, endDate: this.state.endDate, startTime: this.state.startTime, endTime: this.state.endTime, jobs: filtered })
+            }, 1500);
         } else {
-            Alert.alert("Hi, littele problem", "please choose cities");
+            Alert.alert("Hi, little problem", "please choose cities");
         }
+    }
+
+    async getJobs(tag, idArr, jobsRef) {
+        //var index = 0;
+        //var indexStr = JSON.stringify(JSON.stringify(index)); Beer Sheva Area Bnei Brak - Givat Shmuel
+        //city = JSON.stringify(city);
+        //console.log("index = ",index,"\nindexStr = ",indexStr);//search.child(tag.val()).child(city).val();
+        var jobID = [];
+        var dbPath = '/JobSearch/' + tag.val() + '/' + city
+        console.log(dbPath);
+        var test = await firebase.database().ref(dbPath).once('value', snapshot => {
+            console.log('snapshot: ', snapshot);
+            snapshot.forEach(childSnapshot => {
+                console.log('childSnapshot: ', childSnapshot)
+                jobID.push(childSnapshot.val());
+            })
+        });
+
+        return jobID;
+
+        //index++;
+    }
+
+    async filterJobs() {
+
+        var currentUserID = firebase.auth().currentUser.uid;
+        var filtered = [];
+        var search;
+        var jobsRef;
+        var userRef;
+        var userTagRef;
+
+        console.log('ID: ', currentUserID);
+
+        var ref = await firebase.database().ref().once('value', snapshot => {
+            ref = snapshot.val();
+            search = snapshot.child('JobSearch');
+            jobsRef = snapshot.child('jobs');
+            userRef = snapshot.child('users/' + currentUserID);
+            userTagRef = snapshot.child('users/' + currentUserID + '/tags');
+        });
+
+        var j = 0;
+        var idArr = [];
+        
+        userTagRef.forEach(tag => {
+            console.log('Index ', j, ': ', tag.val());
+            j++;
+            this.state.selectedItems.forEach(async city => {
+
+                var jobID = [];
+                var dbPath = '/JobSearch/' + tag.val() + '/' + city
+                console.log(dbPath);
+                var test = await firebase.database().ref(dbPath).once('value', snapshot => {
+                    console.log('snapshot: ', snapshot);
+
+                    snapshot.forEach(childSnapshot => {
+                        console.log('childSnapshot: ', childSnapshot)
+                        jobID.push(childSnapshot.val());
+                    })
+                });
+
+                console.log("JOB ID: ", jobID);
+                console.log(city);
+                console.log(typeof (Array.isArray(jobID)));
+
+                var job = null;
+                jobID.forEach(id => {
+                    id = "" + id;
+                    job = jobsRef.child(id);
+                    console.log("Job Id: ", id);
+                    console.log("Job: ", job);
+                    
+                    if (!idArr.includes(id)) {
+                        filtered.push(job);
+                        idArr.push(id);
+                    }
+                    
+                });
+            })
+        })
+
+        console.log("FILTERED: ", filtered);
+
+        return filtered;
+
     }
 
     render() {

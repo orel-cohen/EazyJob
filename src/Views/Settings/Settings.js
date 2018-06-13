@@ -60,9 +60,9 @@ export default class Settings extends React.Component {
                         <Ionicons name="md-help-buoy" size={60} color="#ffffff" backgroundColor="#4286f4" />
                         <Text style={styles.textView}>How It Work</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate()}>
-                        <MaterialIcons name="rate-review" size={60} color="#ffffff" title="Add Ad" />
-                        <Text style={styles.textView}>Connect Us</Text>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('Contact_Us')}>
+                        <MaterialIcons name="rate-review" size={60} color="#ffffff" title="Contact Us" />
+                        <Text style={styles.textView}>Contact Us</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.lineStyle}>

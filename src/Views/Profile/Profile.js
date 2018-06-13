@@ -42,16 +42,18 @@ export default class Profile extends React.Component {
             profilePic: "http://www.spiritanimal.info/wp-content/uploads/Wolf-Spirit-Animal-2.jpg",
             ratings: 0,
             mail: '',
-            currUserID: this.props.navigation.state.params.currUserID,
+            currUserID: firebase.auth().currentUser.uid,//this.props.navigation.state.params.currUserID,
             isCurrUser: this.props.navigation.state.params.isCurrUser,
+            
             // profile: this.setProfile(),
 
         };
+        console.log(this.state.currentUserID);
     }
 
     /* This function runs before loading the page. */
     async componentWillMount() {
-        var name = await this.getName(this.props.navigation.state.params.currUserID)
+        var name = await this.getName(this.state.currUserID)
         console.log("Name: ", name)
         this.setState({
             fName: name[0],
