@@ -3,10 +3,12 @@ import { Text, View } from 'react-native';
 import Slides from '../Help/Slides'
 
 const SLIDE_DATA = [
-    { text: 'Chose your categories' },
-    { text: 'Swip right the jobs you like' },
-    { text: 'Talk with the boss' },
-    { text: 'Get your odd money' }
+    { text: 'Chose Your Categories' },
+    { text: 'Add Ad' },
+    { text: 'Move To Favorites Interesting Jobs' },
+    { text: 'Submit A Request To Work' },
+    { text: 'Select Employees' },
+    { text: 'And Began To Cooperate' }
 ];
 
 export default class HowItWork extends React.Component {

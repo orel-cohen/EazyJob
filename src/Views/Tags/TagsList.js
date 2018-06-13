@@ -31,7 +31,8 @@ var userList = {
     "MakeUp":"MakeUp",
   "Car":"Car owner",
   "Night":"Work in nights",
-  "Weekend":"Work in weekend"
+  "Weekend":"Work in weekend",
+  "Other":"Other"
 
 }
 var selectedItems=[];
@@ -96,10 +97,10 @@ export default class TagsList extends React.Component{
                         email: this.state.email,
                         tags:this.state.itemToSub,
                         phone_num: this.state.pNumber,
-                        favorite: this.state.favorite,
-                        liked: this.state.liked,
-                        disliked:this.state.disliked,
-                        ads:this.state.ads
+                        //favorite: this.state.favorite,
+                        //liked: this.state.liked,
+                        //disliked:this.state.disliked,
+                        //ads:this.state.ads
                     });
                     Alert.alert('Welcome:)','Now you can start counting \nmoney for the weekend.. ;D');
                     //TODO : TIMEOUT? FOR WHAT??

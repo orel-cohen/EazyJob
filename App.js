@@ -13,6 +13,7 @@ import SignUp from './src/Views/SignUp/SignUp'
 import Jobs from './src/Views/Swip/Jobs/Jobs'
 import HowItWork from './src/Views/Help/HowItWork'
 import AddAd from './src/Views/AddAd/AddAd'
+import MyAds from './src/Views/MyAds/MyAds'
 import Profile from './src/Views/Profile/Profile'
 import Settings from './src/Views/Settings/Settings'
 import HotJobs from './src/Views/HotJobs/HotJobs'
@@ -28,6 +29,7 @@ const Routes = StackNavigator(
     Logo:       { screen: Logo },
     Ad:         { screen: Ad },
     TagsList:   { screen: TagsList },
+    MyAds:         { screen: MyAds },
     _Date:      { screen: _Date },
     _Time:      { screen: _Time },
     SignUp:     { screen: SignUp },
@@ -39,7 +41,7 @@ const Routes = StackNavigator(
     Search: { screen: Search },
     FavoriteJobs: { screen: FavoriteJobs },
   },
-  { initialRouteName: 'Ad' }
+  { initialRouteName: 'Login' }
 );
 
 export default Routes;

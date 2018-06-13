@@ -13,7 +13,11 @@ export default class HomeScreen extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
       };
+      
     constructor(props) {
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ]
         super(props);
         try {
             Firebase.initialise();
@@ -72,7 +76,7 @@ export default class HomeScreen extends React.Component {
                         <Entypo name="pin" size={60} color="#ffffff" title="Add Ad" />
                         <Text style={styles.textView}>Add Ad</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate()}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('MyAds')}>
                         <MaterialCommunityIcons name="worker" size={60} color="#ffffff" title="My Jobs" />
                         <Text style={styles.textView}>My Ads</Text>
                     </TouchableOpacity>

@@ -24,7 +24,11 @@ import HomeScreen from '../HomeScreen/HomeScreen';
 var provider = new firebase.auth.GoogleAuthProvider();
 
 export default class Login extends React.Component {
+    
     constructor(props) {
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ]
         super(props);
         try {
             Firebase.initialise();
