@@ -24,7 +24,11 @@ import HomeScreen from '../HomeScreen/HomeScreen';
 var provider = new firebase.auth.GoogleAuthProvider();
 
 export default class Login extends React.Component {
+    
     constructor(props) {
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ]
         super(props);
         try {
             Firebase.initialise();
@@ -196,7 +200,7 @@ export default class Login extends React.Component {
                     
                 </View>
                 <Text 
-                    onPress={()=> this.props.navigation.navigate('SignUpForm',{selectedSub:"none"})}//this.signup}
+                    onPress={()=> this.props.navigation.navigate('SignUp',{selectedSub:"none"})}//this.signup}
                     style={styles.signupStyle}
                 >
                 Not a member? SignUp

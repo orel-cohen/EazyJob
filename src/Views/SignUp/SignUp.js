@@ -36,7 +36,7 @@ export default class SignUp extends React.Component {
         //  }
     };
     validate(text, type) {
-        fName = /^([A-Z]|[a-z])([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/
+        fName = /^([a-z\u0590-\u05fe])|([A-Z]|[a-z])([-']?[a-z]+)*( ([A-Z]|[a-z])([-']?[a-z]+)*)+$/
         pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
         e_mail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         pNumber = /^([05][0-9]{9})$/
@@ -141,11 +141,12 @@ export default class SignUp extends React.Component {
         );
     }
     async transferData() {
+        DismissKeyboard();
         if (this.state.password != "" && this.state.fName != "" && this.state.email != "" && this.state.pNumber != "") {
             if (this.state.emailValdate == true && this.state.fNameValdate == true && this.state.passwordValdate && this.state.pNumberValdate == true) {
                 setTimeout(() => {
                     this.props.navigation.navigate('TagsList', { email: this.state.email, pNum: this.state.pNumber, password: this.state.password, fullName: this.state.fName })
-                }, 100);
+                }, 15100);
             } else {
                 Alert.alert("Hi, littele problem", "One or more of the data you entered is invalid");
             }
