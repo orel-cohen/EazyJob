@@ -85,7 +85,7 @@ const items = [
         id: "South Coastal Plain",
         children: [
             { id: "Ness Ziona - Rehovot", name: "Ness Ziona - Rehovot" },
-            { id: "Ashdod - Ashkelon Area", name: "Ashdod - Ashkelon Area " },
+            { id: "Ashdod - Ashkelon Area ", name: "Ashdod - Ashkelon Area " },
             { id: "Gedera - Yavne Area ", name: "Gedera - Yavne Area " },
             { id: "Kiryat Gat Area", name: "Kiryat Gat Area" },
             { id: "Shfela", name: "Shfela" }]
@@ -110,11 +110,15 @@ export default class HotJobs extends React.Component {
         //this.transferData=this.transferData.bind(this);
         this.state = {
             selectedItems: [],
-            cityValdate: true,
+            cityValidate: true,
             succesToCraete: false,
+            date: "",
+            endTime: "",
+            endTimeValidate: false,
         };
 
-
+        this.filterJobs = this.filterJobs.bind(this);
+        this.JobSearch = this.JobSearch.bind(this);
     }
     onSelectedItemsChange = (selectedItems) => {
         this.setState({ selectedItems });
@@ -124,11 +128,12 @@ export default class HotJobs extends React.Component {
     ///////////////////
     async JobSearch() {
 
-        var filtered = await this.filterJobs();
+        let filtered = await this.filterJobs();
+
 
         if (this.state.selectedItems && this.state.selectedItems.length > 0) {
             setTimeout(() => {
-                this.props.navigation.navigate('Jobs', { selectedItems: this.state.emaselectedItemsil })
+                this.props.navigation.navigate('Jobs', { selectedItems: this.state.emaselectedItemsil, jobs: filtered})
             }, 1500);
         } else {
             Alert.alert("Hi, littele problem", "please choose cities");
@@ -136,6 +141,107 @@ export default class HotJobs extends React.Component {
     }
 
     async filterJobs() {
+        let currentUserID = "BPJlfxwcunNHIEviueeKxsQiOqG2";//firebase.auth().currentUser.uid;
+        let filtered = [];
+        let search;
+        let jobsRef;
+        let favorite = [];
+        let disliked = [];
+        let liked = [];
+        let dateInterface = new Date();
+        //let day = dateInterface.getDate();
+        //let month = dateInterface.getMonth();
+        //let year = dateInterface.getFullYear();
+        let dates=[];
+        dateInterface.setDate(dateInterface.getDate() +2)
+
+        let day = dateInterface.getDate();
+        let month = dateInterface.getMonth() + 1;
+
+        for (let i = 0; i < 3; i++) {
+            dateInterface.setDate(dateInterface.getDate() + 1);
+            day = dateInterface.getDate();
+            month = dateInterface.getMonth() + 1;
+            if(day < 10) {
+                day = '0' + day;
+            }
+            if(month < 10) {
+                month = '0' + month;
+            }
+            console.log(day + '-' + month + '-' + dateInterface.getFullYear);
+            dates.push(day + '-' + month + '-' + dateInterface.getFullYear())
+        }
+        console.log(dates);
+        console.log(dates[0]);
+        console.log('ID: ', currentUserID);
+
+        // TEST TO BE DELETED:
+        /*this.state.selectedItems = [];
+        this.state.selectedItems.push('Haifa Area');
+        this.state.selectedItems.push('Ashdod - Ashkelon Area ');*/
+        // ENT TEST
+
+        let idArr = [];
+
+        let ref = await firebase.database().ref().once('value', snapshot => {
+
+            search   = snapshot.child('HotJobSearch');
+            jobsRef  = snapshot.child('jobs');
+
+
+            snapshot.child('users/' + currentUserID + '/favorite').forEach(id => {
+                favorite.push(id.val());
+            });
+            snapshot.child('users/' + currentUserID + '/disliked').forEach(id => {
+                disliked.push(id.val());
+            });;
+            snapshot.child('users/' + currentUserID + '/liked'   ).forEach(id => {
+                liked.push(id.val());
+            });;
+
+            console.log('FAVORITE: \n', favorite);
+            console.log('disliked: \n', disliked);
+            console.log('liked: \n', liked);
+
+            console.log('search: ', search);
+
+            this.state.selectedItems.forEach(async(city) => {
+                
+                console.log('search.child(city): ', search.child(city));
+                dates.forEach(async(date) => {
+                    let jobID = [];
+                    
+                    let jobsTest = [];
+                    
+                    snapshot.child('HotJobSearch').child(city).child(date).forEach(childSnapshot => {
+                        
+                        console.log('childSnapshot: ',childSnapshot.val());
+                        //jobID.push(childSnapshot);
+                        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+                        
+                        console.log(snapshot.child('jobs').child(childSnapshot.val()));
+                        console.log('Current ID: ', childSnapshot.val());
+                        console.log(!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val())))
+                        
+                        if(!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val()))) {
+                            console.log('*******************************************************');
+                            let job = snapshot.child('jobs/'+childSnapshot.val());
+                            console.log("childSnapshot: \n", childSnapshot);
+                            console.log("childSnapshot.val(): \n", childSnapshot.val());
+                            console.log(city);
+                            console.log(date);
+                            filtered.push(job);
+                            idArr.push(childSnapshot.val());
+                        }
+                    })
+                })
+            })
+        });
+
+        console.log("FILTERED: ", filtered);
+
+        return filtered;
+        
 
     }
 
@@ -143,7 +249,7 @@ export default class HotJobs extends React.Component {
         const { city } = this.state;
         return (
             <View>
-                <Text>choose cities, and then you will get all jobs in the next 72 hours. </Text>
+                <Text>Choose cities, and then you will get all jobs in the next 72 hours. </Text>
                 <SectionedMultiSelect
                     items={items}
                     uniqueKey='id'
@@ -154,6 +260,28 @@ export default class HotJobs extends React.Component {
                     onSelectedItemsChange={this.onSelectedItemsChange}
                     selectedItems={this.state.selectedItems}
                 />
+{/*
+                <Text>Select Date:</Text>
+                <DatePicker
+                    style={{ width: 200 }[styles.input,
+                        !this.state.dateValidate ? styles.error : null]}
+                    date={this.state.date}
+                    mode="date"
+                    format="DD-MM-YYYY"
+                    showIcon={false}
+                    customStyles={{
+                        dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0
+                        },
+                        dateInput: {
+                            marginLeft: 36
+                        }
+                    }}
+                    onDateChange={(date) => { this.setState({ date }); this.validate(date, 'date') }} />
+                <Text>Please confirm the date</Text>*/}
 
                 <Button
                     onPress={() => this.JobSearch()}
@@ -163,12 +291,38 @@ export default class HotJobs extends React.Component {
     }
 }
 
-/*
-dateValdate:true,
-start:"",
-startValdate:true,
-end:"",
-endValdate:true,
-tagsValdate:true,
-image: "",
-succesToCraete:false,*/
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#3498db',
+        padding: 15,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+    input: {
+        width: 300,
+        height: 45,
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        marginBottom: 12,
+        color: 'rgba(0,0,0,1)',
+        paddingHorizontal: 10,
+    },
+    buttonText: {
+        color: 'rgba(0,0,0,1)',
+        textAlign: 'center',
+        fontWeight: '700'
+
+    },
+    buttonContainer: {
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        paddingVertical: 15
+    },
+    TextStyle: {
+        fontSize: 23,
+        textAlign: 'center',
+        color: '#000',
+    },
+    error: {
+        borderWidth: 2,
+        borderColor: 'red'
+    }
+});

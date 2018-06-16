@@ -5,7 +5,9 @@ import {
   View,
   TextInput,
   Button,
+  Alert,
   KeyboardAvoidingView,
+  Keyboard,
   ScrollView, 
   Image,
 } from 'react-native';
@@ -16,17 +18,20 @@ import { StackNavigator } from 'react-navigation';
 //import _Time from '../Date_Time/_Time'
 //import TagsList from '../Tags/TagsList'
 import email from 'react-native-email'
-import Routes from '../../App';
-
+import Firebase from '../../Firebase/Firebase';
+import * as firebase from "firebase";
 
 export default class Contact_Us extends React.Component {
 
     constructor(props) {
         super(props);
+        try {
+            Firebase.initialise();
+        } catch (error) { }
         this.state = {
             title: '',
             message: '',
-            currUserID: this.props.navigation.state.params.currUserID,
+            currUserID: firebase.auth().currentUser.uid,
           };
     }
 
@@ -43,11 +48,13 @@ export default class Contact_Us extends React.Component {
     }
 
     sendMail = (title, message) => {
-        const to = ['rodrigoshiller@gmail.com', 'madar21h@gmail.com']
-        email(to, {
+        const to = ['rodrigoshiller@gmail.com']
+        /*email(to, {
             subject: title,
             body: message,
-        }).catch(console.error)
+        }).catch(console.error)*/
+        
+        
     }
 
     render() {
@@ -58,10 +65,10 @@ export default class Contact_Us extends React.Component {
 
         return (
             <View>
-                <View /*style={{ flexDirection: 'row' }}*/>
+                <KeyboardAvoidingView /*style={{ flexDirection: 'row' }}*/>
                     <Text style={styles.title}>Title</Text>
-                    <Text>HELLO {JSON.stringify(userId)}</Text>
-                    <Text style={styles.title}>FU</Text>
+                    {/*<Text>HELLO {JSON.stringify(userId)}</Text>
+        <Text style={styles.title}>FU</Text>*/}
                     <TextInput
                         returnKeyType="next"
                         keyboardType="default"
@@ -71,27 +78,32 @@ export default class Contact_Us extends React.Component {
                         //value={this.state.description}
                         multiline={false}
                     />
-                </View>
+                </KeyboardAvoidingView>
 
-                <View>
+                <KeyboardAvoidingView>
                     <Text style={styles.title}>Message</Text>
                     <TextInput
                         returnKeyType="next"
                         keyboardType="default"
                         autoCorrect={true}
                         style={styles.input}
-                        onChangeText={this.saveTitle}
+                        onChangeText={this.saveMessage}
                         //value={this.state.description}
                         multiline={false}
                     />
-                </View>
+                </KeyboardAvoidingView>
 
-                <View>
+                <KeyboardAvoidingView>
                     <Button
                         title = 'Send'
-                        onPress = { () =>  this.sendMail(this.state.title, this.state.message) }
+                        onPress = { () => {
+                            this.sendMail(this.state.title, this.state.message)
+                            Keyboard.dismiss()
+                            Alert.alert("Thank you for your input.\nWe will contact you ASAP.")
+                            this.props.navigation.navigate('HomeScreen' ,{currUserID: userId}  )
+                        }  }
                     />
-                </View>
+                </KeyboardAvoidingView>
 
             </View>
         )

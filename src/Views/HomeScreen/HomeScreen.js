@@ -25,10 +25,7 @@ export default class HomeScreen extends React.Component {
         //this.getName = this.getName.bind(this);
         this.state={
             nameToDisplay: "",
-<<<<<<< HEAD
-=======
             //currUserID: firebase.auth().currentUser.uid,
->>>>>>> 176c861a455927bf0cc6d4e83e52a158b5e6c1a5
         }
         //this.getName();
         //console.log(this.state.currUserID)
@@ -68,30 +65,13 @@ export default class HomeScreen extends React.Component {
             
             <View style={styles.mainStyle}>
                 <View style={styles.lineStyle}>
-<<<<<<< HEAD
-                    {/*<Text style={styles.textView}>Logo here</Text>*/}
-                    
-                </View>
-                <Text>{/*this.state.firebase.auth().currentUser.uid*/}</Text>
-                <View style={styles.lineStyle}>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('Profile', {isCurrUser: true})}>
-                        <MaterialIcons name="face" size={75} color="#ffffff" backgroundColor="#4286f4"/>
-                        <Text style={styles.textView}>Profile</Text>
-                    </TouchableOpacity>
-                   { /*<TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('Contact_Us', {firebase.auth().currentUser.uid: 'TEST'/*this.state.firebase.auth().currentUser.uid})}>
-                        <MaterialCommunityIcons name="mailbox" size={75} color="#ffffff" title="My Jobs"/>
-                        <Text style={styles.textView}>Contact Us</Text>
-                        </TouchableOpacity>*/}
-                
-=======
                     <Text style={styles.textView}>Logo here</Text>
                 </View>
                 <View style={styles.lineStyle}>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Profile', {currUserID: this.state.currUserID, isCurrUser: true})}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Profile', {currUserID: firebase.auth().currentUser.uid, isCurrUser: true})}>
                         <MaterialIcons name="face" size={60} color="#ffffff" backgroundColor="#4286f4"/>
                         <Text style={styles.textView}>Profile</Text>
                     </TouchableOpacity>                
->>>>>>> 176c861a455927bf0cc6d4e83e52a158b5e6c1a5
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('AddAd')}>
                         <Entypo name="pin" size={60} color="#ffffff" title="Add Ad" />
                         <Text style={styles.textView}>Add Ad</Text>
