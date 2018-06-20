@@ -42,18 +42,13 @@ export default class FavoriteJobs extends React.Component {
     }
     async componentWillMount() {
         console.log("1");
-        jobID = '';
+        //jobID = '';
         try {
             console.log("2");
             //var currentUser = firebase.auth().currentUser.uid;
-            await firebase.database().ref('users/').child("TL0RQUso3rQWqXZIOwR8UocN5YT2").child("favorite").once('value', snapshot => {
-                snapshot.forEach(childSnapshot => {
-                    jobID = childSnapshot.val();
-                    console.log(jobID);
-                    this.state.jobsID.push(jobID);
-                })
-            })
+            var favoriteID= await this.GetFavoriteID();
             console.log("123123"+this.state.jobsID);
+            console.log("22222333"+favoriteID);
 
             /*try {
                 console.log("123");
@@ -71,6 +66,17 @@ export default class FavoriteJobs extends React.Component {
         } catch (error) {
             console.log(error.toString())
         }
+    }
+
+    async GetFavoriteID(){
+        await firebase.database().ref('users/').child("TL0RQUso3rQWqXZIOwR8UocN5YT2").child("favorite").once('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                jobID = childSnapshot.val();
+                console.log(jobID);
+                this.state.jobsID.push(jobID);
+            })
+        })
+        return jobsID;
     }
     async FindDetails() {
 

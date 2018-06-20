@@ -6,20 +6,6 @@ import * as firebase from "firebase";
 import Firebase from '../../Firebase/Firebase';
 import Deck from '../Swip/Deck'
 
-const DATA = [
-    { id: 1, text: 'Job #1', boss: 'Boss #1', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' },
-    { id: 2, text: 'Job #2', boss: 'Boss #2', dStart: '01/01/0001', place: 'Home', uri: 'http://www.fluxdigital.co/wp-content/uploads/2015/04/Unsplash.jpg' },
-    { id: 3, text: 'Job #3', boss: 'Boss #3', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
-    { id: 4, text: 'Job #4', boss: 'Boss #4', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
-    { id: 5, text: 'Job #5', boss: 'Boss #5', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' },
-    { id: 6, text: 'Job #6', boss: 'Boss #6', dStart: '01/01/0001', place: 'Home', uri: 'http://www.fluxdigital.co/wp-content/uploads/2015/04/Unsplash.jpg' },
-    { id: 11, text: 'Job #3', boss: 'Boss #3', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
-    { id: 111, text: 'Job #4', boss: 'Boss #4', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
-    { id: 1111, text: 'Job #5', boss: 'Boss #5', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' },
-    { id: 222, text: 'Job #6', boss: 'Boss #6', dStart: '01/01/0001', place: 'Home', uri: 'http://www.fluxdigital.co/wp-content/uploads/2015/04/Unsplash.jpg' },
-    { id: 7, text: 'Job #7', boss: 'Boss #7', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
-    { id: 8, text: 'Job #8', boss: 'Boss #8', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
-];
 const MyAdsData = [];
 
 export default class MyAds extends React.Component {
@@ -39,54 +25,99 @@ export default class MyAds extends React.Component {
             jobsID: []
 
         }
+        this.MyAdsID = this.MyAdsID.bind(this)
+        this.MyAdsDetails = this.MyAdsDetails.bind(this)
+        this.renderItem = this.renderItem.bind(this)
+        //this.renderNoMoreCards = this.renderNoMoreCards.bind(this)
     }
 
-    async componentWillMount() {
-        console.log("1");
+    async componentDidMount() {
         jobID = '';
-        try {
-            console.log("2");
-            //var currentUser = firebase.auth().currentUser.uid;
-            await firebase.database().ref('users/').child("TL0RQUso3rQWqXZIOwR8UocN5YT2").child("ads").once('value', snapshot => {
-                snapshot.forEach(childSnapshot => {
-                    jobID = childSnapshot.child("ads").val();
-                    this.state.jobsID.push(jobID);
-                    console.log(this.state.jobsID);
-                })
-            })
-            try {
-                console.log("123");
-                this.state.jobsID.forEach(profile => {
-                    console.log(profile);
-                     firebase.database().ref('jobs/' + profile).once('value', snapshot => {
-                        this.state.myJobs.push(snapshot);
-                        console.log(this.state.myJobs);
-                    })
-                });
-                console.log("done" + this.state.myJobs);
-            } catch (error) {
-                console.log(error.toString())
-            }        } catch (error) {
-            console.log(error.toString())
-        }
-        //console.log("done"+ this.state.myJobs);
+        await this.MyAdsID();
+
     }
 
+    async MyAdsID() {
+        //var currentUser = firebase.auth().currentUser.uid;
+        let jobIDArray = []
+        try {
+            let value = await firebase.database().ref('users/').child("TL0RQUso3rQWqXZIOwR8UocN5YT2").child("ads").once('value', async (snapshot) => {
+                snapshot.forEach(childSnapshot => {
+                    jobID = childSnapshot.val();
+                    // this.state.jobsID.push(jobID);
+                    jobIDArray.push(jobID)
+                })
+
+            })
+            this.setState({ jobsID: jobIDArray })
+            await this.MyAdsDetails();
+        }
+        catch (e) {
+            console.log('caught error', e);
+            // Handle exceptions
+        }
+        //console.log("done!!!" + this.state.jobsID);
+    }
+    async MyAdsDetails() {
+        //var currentUser = firebase.auth().currentUser.uid;
+        let jobIDArray = this.state.jobsID;
+        let myJobsArray = []
+
+        try {
+            await jobIDArray.map(async (profile) => {
+                let value = await firebase.database().ref('jobs/' + profile).once('value', snapshot => {
+                    const va = snapshot.val();
+                    myJobsArray.push(snapshot.val())
+                    this.setState({ myJobs: myJobsArray })
+
+                    return false;
+                })
+            });
+
+        }
+        catch (e) {
+            console.log('caught error', e);
+            // Handle exceptions
+        }
+        //console.log("done!!!!!!!!!!!" + this.state.myJobs);
+    }
     //call every time when we will take something from Deck
-    renderItem(item) {
+    renderItem(job) {
+        const { item, index } = job
         return (
-            <View>
-                <Button
-                    icon={{ name: 'code' }}
-                    backgroundColor="#03A9F4"
-                    title="Show More Details"
-                />
+            <View key={index}>
+                <Text>
+                    Title: {item.title}
+                </Text>
+                <Text>
+                    Date: {item.date}
+                </Text>
+                <Text>
+                    likes: {item.liked.length}
+                </Text>
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        <Button
+                            backgroundColor='#3498db'
+                            title='Details'
+                            icon={{ name: 'menu' }}
+                        >
+                        </Button>
+                    </View>
+                    <View style={styles.button}>
+                        <Button
+                            backgroundColor='#3498db'
+                            title='Liked List!'
+                            onPress={()=> this.props.navigation.navigate('CallList', {adID: item.liked})}/>
+                    </View>
+                </View>
             </View>
         );
     }
 
 
-
+/*
+//option whenn there is no ads
     renderNoMoreCards() {
         return (
             <Card title="No More Hot Jobs For You">
@@ -100,17 +131,19 @@ export default class MyAds extends React.Component {
             </Card>
         );
     }
-
+*/
     render() {
+        const jobsArray = this.state.myJobs.length > 0 ? this.state.myJobs : []
+        //console.log('new job array',jobsArray)
         return (
             <View>
                 <ScrollView horizontal={false}>
-                    <FlatList
-                        data={this.state.myJobs}
+                    {jobsArray.length > 0 && <FlatList
+                        data={jobsArray}
                         renderItem={this.renderItem}
-                        keyExtractor={item.state.myJobs.addid.val}
+                        keyExtractor={(item, index) => { `key-${item.addid}` }}
                     // renderNoMoreCards={this.renderNoMoreCards}
-                    />
+                    />}
                 </ScrollView>
             </View>
         );
@@ -124,5 +157,45 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-
+    cardStyle: {
+        borderWidth: 1,
+        borderRadius: 2,
+        borderColor: '#ddd',
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 1,
+        marginLeft: 5,
+        marginRight: 5,
+        marginTop: 10
+    },
+    containerStyle: {
+        borderBottomWidth: 1,
+        padding: 5,
+        backgroundColor: '#fff',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        borderColor: '#ddd',
+        position: 'relative'
+    },
+    headerContainer: {
+        flexDirection: 'column',
+        justifyContent: 'space-around'
+    },
+    headerTextStyle: {
+        fontSize: 18
+    },
+    buttonContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    button: {
+        borderWidth: 1,
+        padding: 5,
+        width: '50%',
+        height: 40
+    }
 });

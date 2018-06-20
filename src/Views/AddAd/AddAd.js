@@ -42,35 +42,6 @@ export default class SignUp extends React.Component {
 
     publish() {
         //DismissKeyboard();
-<<<<<<< HEAD
-        if ((this.state.tag1 == this.state.tag2 || this.state.tag3 == this.state.tag2 || this.state.tag1 == this.state.tag3) && (this.state.tag2 != "" && this.state.tag3 != "")) {
-            Alert.alert("Hi, littele problem", "You choosed category more than one time");
-        }
-        else {
-            try {
-                var userId=firebase.auth().currentUser.uid;
-                ref = firebase.database().ref('jobs/').push()
-                let newAd = {
-                    bossId: userId,
-                    title: this.state.addTitle,
-                    pay: this.state.pay,
-                    city: this.state.city,
-                    place: this.state.place,
-                    date: this.state.date,
-                    start: this.state.startTime,
-                    end: this.state.endTime,
-                    tag1: this.state.tag1,
-                    tag2: this.state.tag2,
-                    tag3: this.state.tag3,
-                    image: "",
-                    remarks: this.state.remarks,
-                    favorite: this.state.favorite,
-                    liked: this.state.liked,
-                    disliked: this.state.disliked,
-                    addid: ref.key
-                }
-                ref.set(newAd)
-=======
         if (this.state.payValdate != false && this.state.placeValdate != false && this.state.dateValdate != false && this.state.startTimeValdate != false && this.state.endTimeValdate != false && this.state.titleValdate != false) {
             console.log("1");
             if ((this.state.tag1 == this.state.tag2 || this.state.tag1 == this.state.tag3) || (this.state.tag2 != "" && this.state.tag3 != "" && this.state.tag3 == this.state.tag2)) {
@@ -121,7 +92,6 @@ export default class SignUp extends React.Component {
                     setTimeout(() => {
                         this.props.navigation.navigate('HomeScreen')
                     }, 1500);
->>>>>>> 176c861a455927bf0cc6d4e83e52a158b5e6c1a5
 
                 } catch (error) {
                     // Handle Errors here.
@@ -349,12 +319,8 @@ export default class SignUp extends React.Component {
                             marginLeft: 36
                         }
                     }}
-<<<<<<< HEAD
-                    onDateChange={(startTimet) => { this.setState({ startTime }); console.log(startTime);}} />
-=======
                     onDateChange={startTime => { this.setState({ startTime: startTime }); this.validate(startTime, 'startTime') }}
-                />
->>>>>>> 176c861a455927bf0cc6d4e83e52a158b5e6c1a5
+                    />
                 <Text>End:</Text>
                 <DatePicker
                     style={{ width: 200 }[styles.input,
@@ -376,16 +342,10 @@ export default class SignUp extends React.Component {
                             marginLeft: 36
                         }
                     }}
-<<<<<<< HEAD
-                    onDateChange={(endTime) => { this.setState({ endTime }); console.log(endTime);}} />
-                <Text>Please choose at least 1 categories.</Text>
-                <Text>Don't choose the same categories.</Text>
-=======
                     onDateChange={(endTime) => { this.setState({ endTime: endTime }); this.validate(endTime, 'endTime') }} />
                 <Text>Please confirm the date, start time and end time</Text>
 
 
->>>>>>> 176c861a455927bf0cc6d4e83e52a158b5e6c1a5
 
                 <TextInput
                     placeholder="Remarks"

@@ -8,12 +8,6 @@ import * as firebase from "firebase";
 import Firebase from '../../Firebase/Firebase';
 
 export default class Ad extends React.Component {
-<<<<<<< HEAD
-  render(){
-    return(
-    <AdView/>
-)}
-=======
   static navigationOptions = {
     title: 'Ad',
   };
@@ -113,5 +107,4 @@ export default class Ad extends React.Component {
       </View>
     );
   }
->>>>>>> 176c861a455927bf0cc6d4e83e52a158b5e6c1a5
 }
