@@ -68,7 +68,7 @@ export default class HomeScreen extends React.Component {
                     <Text style={styles.textView}>Logo here</Text>
                 </View>
                 <View style={styles.lineStyle}>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Profile', {currUserID: this.state.currUserID, isCurrUser: true})}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Profile', {currUserID: firebase.auth().currentUser.uid, isCurrUser: true})}>
                         <MaterialIcons name="face" size={60} color="#ffffff" backgroundColor="#4286f4"/>
                         <Text style={styles.textView}>Profile</Text>
                     </TouchableOpacity>                

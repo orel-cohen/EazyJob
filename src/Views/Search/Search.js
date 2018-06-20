@@ -101,33 +101,6 @@ const items = [
             { id: "Southern Dead Sea", name: "Southern Dead Sea" }]
     },
 ]
-/*
-var userList = { // 23 Tags Overall.
-    "Renovations": "Renovations",
-    "Security": "Security/Ushers",
-    "Bartender": "Bartender",
-    "Animals": "Animals (Keep or Trip)",
-    "Babysitter": "Babysitter",
-    "Home": "Working from home",
-    "Shipments": "Shipments",
-    "Volunteering": "Volunteering (for free)",
-    "Inventory": "Inventory counts/arrangement",
-    "Porterage": "Porterage",
-    "Private": "Private lessons",
-    "Translate": "Translate Articles",
-    "Gardening": "Gardening",
-    "Cleaning": "Cleaning",
-    "Kitchen": "Kitchen",
-    "Events": "Events (moderator, clown) ",
-    "Waiters": "Waiters",
-    "Photographer": "Photographer",
-    "DJ": "DJ",
-    "MakeUp": "MakeUp",
-    "Car": "Car owner",
-    "Night": "Work in nights",
-    "Weekend": "Work in weekend"
-
-}*/
 
 export default class Search extends React.Component {
     constructor(props) {
@@ -138,15 +111,15 @@ export default class Search extends React.Component {
         //this.transferData=this.transferData.bind(this);
         this.state = {
             selectedItems: [],
-            cityValdate: true,
-            startDate: "",
-            startDateValdate: true,
-            endDate: "",
-            endDateValdate: true,
+            cityValidate: true,
+            date: "",
+            dateValidate: true,
+            /*endDate: "",
+            endDateValidate: true,
             startTime: "",
-            startValdate: true,
+            startValidate: true,
             endTime: "",
-            endValdate: true,
+            endValidate: true,*/
             succesToCraete: false,
             jobsList: null,
         };
@@ -178,7 +151,7 @@ export default class Search extends React.Component {
         //city = JSON.stringify(city);
         //console.log("index = ",index,"\nindexStr = ",indexStr);//search.child(tag.val()).child(city).val();
         var jobID = [];
-        var dbPath = '/JobSearch/' + tag.val() + '/' + city
+        var dbPath = '/JobSearch/' + tag.val() + '/' + city + '/' + this.state.date
         console.log(dbPath);
         var test = await firebase.database().ref(dbPath).once('value', snapshot => {
             console.log('snapshot: ', snapshot);
@@ -201,27 +174,49 @@ export default class Search extends React.Component {
         var jobsRef;
         var userRef;
         var userTagRef;
-
+        var favorite = [];
+        var disliked = [];
+        var liked = [];
+        var dateReq = '';
         console.log('ID: ', currentUserID);
 
         var ref = await firebase.database().ref().once('value', snapshot => {
-            ref = snapshot.val();
+            
             search = snapshot.child('JobSearch');
             jobsRef = snapshot.child('jobs');
             userRef = snapshot.child('users/' + currentUserID);
             userTagRef = snapshot.child('users/' + currentUserID + '/tags');
+
+            snapshot.child('users/' + currentUserID + '/favorite').forEach(id => {
+                favorite.push(id.val());
+            });
+            snapshot.child('users/' + currentUserID + '/disliked').forEach(id => {
+                disliked.push(id.val());
+            });;
+            snapshot.child('users/' + currentUserID + '/liked'   ).forEach(id => {
+                liked.push(id.val());
+            });;
         });
 
         var j = 0;
         var idArr = [];
+
+        console.log('FAVORITE: \n', favorite);
+        console.log('disliked: \n', disliked);
+        console.log('liked: \n', liked);
         
+        if(this.state.date != "") {
+            this.state.date = '/' + this.state.date
+        }
+
         userTagRef.forEach(tag => {
             console.log('Index ', j, ': ', tag.val());
             j++;
+            var jobID = [];
             this.state.selectedItems.forEach(async city => {
 
-                var jobID = [];
-                var dbPath = '/JobSearch/' + tag.val() + '/' + city
+                
+                var dbPath = '/JobSearch/' + tag.val() + '/' + city + this.state.date
                 console.log(dbPath);
                 var test = await firebase.database().ref(dbPath).once('value', snapshot => {
                     console.log('snapshot: ', snapshot);
@@ -232,29 +227,33 @@ export default class Search extends React.Component {
                     })
                 });
 
-                console.log("JOB ID: ", jobID);
+                console.log("JOB IDS: ", jobID);
                 console.log(city);
                 console.log(typeof (Array.isArray(jobID)));
 
                 var job = null;
                 jobID.forEach(id => {
-                    id = "" + id;
-                    job = jobsRef.child(id);
                     console.log("Job Id: ", id);
-                    console.log("Job: ", job);
-                    
-                    if (!idArr.includes(id)) {
+                    console.log(favorite.includes(id));
+                    console.log((favorite.includes(id) || liked.includes(id) || disliked.includes(id) || idArr.includes(id)));
+                    if(!(favorite.includes(id) || liked.includes(id) || disliked.includes(id) || idArr.includes(id) || idArr.includes(id))) {
+                        id = "" + id;
+                        job = jobsRef.child(id);
+
+                        console.log("Job Id: ", id);
+                        console.log("Job: ", job);
+                        
                         filtered.push(job);
                         idArr.push(id);
+                          
                     }
-                    
                 });
             })
         })
-
         console.log("FILTERED: ", filtered);
 
         return filtered;
+        
 
     }
 
@@ -275,7 +274,8 @@ export default class Search extends React.Component {
 
                 <Text>From Date:</Text>
                 <DatePicker
-                    style={{ width: 200 }}
+                    style={{ width: 200 }[styles.input,
+                        !this.state.dateValidate ? styles.error : null]}
                     date={this.state.date}
                     mode="date"
                     format="DD-MM-YYYY"
@@ -291,14 +291,18 @@ export default class Search extends React.Component {
                             marginLeft: 36
                         }
                     }}
-                    onDateChange={(startDate) => { this.setState({ startDate }); }} />
-
+                onDateChange={(date) => { this.setState({ date }); this.validate(date, 'date') }} />
+                <Text>Please confirm the date, start time and end time</Text>
+{/*                
                 <Text>To Date:</Text>
                 <DatePicker
-                    style={{ width: 200 }}
-                    date={this.state.date}
-                    mode="date"
-                    format="DD-MM-YYYY"
+                    style={{ width: 200 }[styles.input,
+                        !this.state.endTimeValidate ? styles.error : null]}
+                    date={this.state.endTime}
+                    mode="time"
+                    format="LT"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
                     showIcon={false}
                     customStyles={{
                         dateIcon: {
@@ -311,7 +315,8 @@ export default class Search extends React.Component {
                             marginLeft: 36
                         }
                     }}
-                    onDateChange={(endDate) => { this.setState({ endDate }); }} />
+                    onDateChange={(endTime) => { this.setState({ endTime: endTime }); this.validate(endTime, 'endTime') }} />
+                
 
                 <Text>Start At:</Text>
                 <DatePicker
@@ -351,6 +356,7 @@ export default class Search extends React.Component {
                         }
                     }}
                     onDateChange={(endTime) => { this.setState({ endTime }); }} />
+                */}
                 <Button
                     onPress={() => this.JobSearch()}
                     title='Search' />
@@ -358,3 +364,39 @@ export default class Search extends React.Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#3498db',
+        padding: 15,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+    input: {
+        width: 300,
+        height: 45,
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        marginBottom: 12,
+        color: 'rgba(0,0,0,1)',
+        paddingHorizontal: 10,
+    },
+    buttonText: {
+        color: 'rgba(0,0,0,1)',
+        textAlign: 'center',
+        fontWeight: '700'
+
+    },
+    buttonContainer: {
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        paddingVertical: 15
+    },
+    TextStyle: {
+        fontSize: 23,
+        textAlign: 'center',
+        color: '#000',
+    },
+    error: {
+        borderWidth: 2,
+        borderColor: 'red'
+    }
+});

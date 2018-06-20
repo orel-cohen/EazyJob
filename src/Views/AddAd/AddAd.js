@@ -17,18 +17,18 @@ export default class SignUp extends React.Component {
         //this.transferData=this.transferData.bind(this);
         this.state = {
             addTitle: "",
-            titleValdate: false,
+            titleValidate: false,
             pay: "",
-            payValdate: false,
+            payValidate: false,
             city: "Haifa Area",
             place: "",
-            placeValdate: false,
+            placeValidate: false,
             date: "",
-            dateValdate: false,
+            dateValidate: false,
             startTime: "",
-            startTimeValdate: false,
+            startTimeValidate: false,
             endTime: "",
-            endTimeValdate: false,
+            endTimeValidate: false,
             tag1: "Animals",
             tag2: "",
             tag3: "",
@@ -42,7 +42,11 @@ export default class SignUp extends React.Component {
 
     publish() {
         //DismissKeyboard();
+<<<<<<< HEAD
         if (this.state.payValdate != false && this.state.placeValdate != false && this.state.dateValdate != false && this.state.startTimeValdate != false && this.state.endTimeValdate != false && this.state.titleValdate != false) {
+=======
+        if (this.state.payValidate != false && this.state.placeValidate != false && this.state.dateValidate != false && this.state.startTimeValidate != false && this.state.endTimeValidate != false && this.state.titleValidate != false) {
+>>>>>>> 589e8c3bfe278a32edb4c2e7cc52c295c14a7588
             console.log("1");
             if ((this.state.tag1 == this.state.tag2 || this.state.tag1 == this.state.tag3) || (this.state.tag2 != "" && this.state.tag3 != "" && this.state.tag3 == this.state.tag2)) {
                 Alert.alert("Hi, littele problem", "You choosed category more than one time");
@@ -75,7 +79,7 @@ export default class SignUp extends React.Component {
                     ref.set(newAd)
                     ref = firebase.database().ref('users/').child(userId + '/ads').push(addId)
                     ref.set(addId)
-                    ref = firebase.database().ref('JobSearch/' + this.state.tag1 + '/' + this.state.city).push(addId)
+                    ref = firebase.database().ref('JobSearch/' + this.state.tag1 + '/' + this.state.city + '/' + this.state.date).push(addId)
                     ref.set(addId)
                     ref = firebase.database().ref('HotJobSearch/' + this.state.city + '/' + this.state.date).push(addId)
                     ref.set(addId)
@@ -113,66 +117,66 @@ export default class SignUp extends React.Component {
         if (type == 'title') {
             if (text != '') {
                 this.setState({
-                    titleValdate: true,
+                    titleValidate: true,
                 })
             } else {
                 this.setState({
-                    titleValdate: false,
+                    titleValidate: false,
                 })
             }
         }
         else if (type == 'pay') {
             if (price.test(text)) {
                 this.setState({
-                    payValdate: true,
+                    payValidate: true,
                 })
             } else {
                 this.setState({
-                    payValdate: false,
+                    payValidate: false,
                 })
             }
         }
         else if (type == 'place') {
             if (text != '') {
                 this.setState({
-                    placeValdate: true,
+                    placeValidate: true,
                 })
             } else {
                 this.setState({
-                    placeValdate: false,
+                    placeValidate: false,
                 })
             }
         }
         else if (type == 'endTime') {
             if (text != '') {
                 this.setState({
-                    endTimeValdate: true,
+                    endTimeValidate: true,
                 })
             } else {
                 this.setState({
-                    endTimeValdate: false,
+                    endTimeValidate: false,
                 })
             }
         }
         else if (type == 'startTime') {
             if (text != '') {
                 this.setState({
-                    startTimeValdate: true,
+                    startTimeValidate: true,
                 })
             } else {
                 this.setState({
-                    startTimeValdate: false,
+                    startTimeValidate: false,
                 })
             }
         }
         else if (type == 'date') {
             if (text != '') {
                 this.setState({
-                    dateValdate: true,
+                    dateValidate: true,
                 })
             } else {
                 this.setState({
-                    dateValdate: false,
+                    dateValidate: false,
                 })
             }
         }
@@ -186,14 +190,14 @@ export default class SignUp extends React.Component {
 
                 <TextInput
                     style={[styles.input,
-                    !this.state.titleValdate ? styles.error : null]}
+                    !this.state.titleValidate ? styles.error : null]}
                     placeholder="Title"
                     returnKeyType="next"
                     onChangeText={(addTitle) => { this.setState({ addTitle }); this.validate(addTitle, 'title') }} />
 
                 <TextInput
                     style={[styles.input,
-                    !this.state.payValdate ? styles.error : null]}
+                    !this.state.payValidate ? styles.error : null]}
                     placeholder="Pay"
                     returnKeyType="next"
                     //onSubmitEditing={()=> this.passwordInput.focus()}
@@ -272,7 +276,7 @@ export default class SignUp extends React.Component {
 
                 <TextInput
                     style={[styles.input,
-                    !this.state.placeValdate ? styles.error : null]}
+                    !this.state.placeValidate ? styles.error : null]}
                     placeholder="Place/Address"
                     returnKeyType="next"
                     onChangeText={(place) => { this.setState({ place }); this.validate(place, 'place') }} />
@@ -280,7 +284,7 @@ export default class SignUp extends React.Component {
                 <Text>Date:</Text>
                 <DatePicker
                     style={{ width: 200 }[styles.input,
-                        !this.state.dateValdate ? styles.error : null]}
+                        !this.state.dateValidate ? styles.error : null]}
                     date={this.state.date}
                     mode="date"
                     format="DD-MM-YYYY"
@@ -301,7 +305,7 @@ export default class SignUp extends React.Component {
                 <Text>Start:</Text>
                 <DatePicker
                     style={{ width: 200 }[styles.input,
-                        !this.state.startTimeValdate ? styles.error : null]}
+                        !this.state.startTimeValidate ? styles.error : null]}
                     date={this.state.startTime}
                     mode="time"
                     format="LT"
@@ -320,11 +324,15 @@ export default class SignUp extends React.Component {
                         }
                     }}
                     onDateChange={startTime => { this.setState({ startTime: startTime }); this.validate(startTime, 'startTime') }}
+<<<<<<< HEAD
                     />
+=======
+                />
+>>>>>>> 589e8c3bfe278a32edb4c2e7cc52c295c14a7588
                 <Text>End:</Text>
                 <DatePicker
                     style={{ width: 200 }[styles.input,
-                        !this.state.endTimeValdate ? styles.error : null]}
+                        !this.state.endTimeValidate ? styles.error : null]}
                     date={this.state.endTime}
                     mode="time"
                     format="LT"
