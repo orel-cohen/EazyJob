@@ -42,7 +42,7 @@ const Routes = StackNavigator(
     Search: { screen: Search },
     FavoriteJobs: { screen: FavoriteJobs },
   },
-  { initialRouteName: 'Login' }
+  { initialRouteName: 'FavoriteJobs' }
 );
 
 export default Routes;
