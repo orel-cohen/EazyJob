@@ -21,7 +21,8 @@ class Deck extends Component {
     //default function to make the app works whe card swip to a side when we make a real function with the same name the default will not work
     static defaultProps = {
         onSwipeRight: () => { },
-        onSwipeLeft: () => { }
+        onSwipeLeft: () => { },
+        keyProp: 'id'
     }
     //constructor
     constructor(props) {
@@ -121,7 +122,7 @@ class Deck extends Component {
             if (i === this.state.index) {
                 return (
                     <Animated.View
-                        key={item.id}
+                        key={item[this.props.keyProp]}
                         style={[this.getCardStyle(), styles.cardStyle, { zIndex: 99 }]}
                         {...this.state.panResponder.panHandlers} //the '...' is for separate the cards from each other
                     >
@@ -142,7 +143,7 @@ class Deck extends Component {
 
             return (
                 <Animated.View
-                    key={item.id}
+                    key={item[this.props.keyProp]}
                     style={[styles.cardStyle, { top: 10 * (i - this.state.index), zIndex: 5 }]}
                 >
                     {this.props.renderCard(item)}

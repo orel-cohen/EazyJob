@@ -2,17 +2,25 @@ import React, { Component } from 'react';
 import { View, Animated, StyleSheet, Text, Image } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 
+import * as firebase from "firebase";
+
 import Deck from '../Deck'
 
 export default class Jobs extends React.Component {
 
     constructor(props) {
         super(props);
+        try {
+            Firebase.initialise();
+        } catch (error) { }
         this.state = {
             jobs: this.props.navigation.state.params.jobs
         }
-        console.log("jobs: ", this.state.jobs);
-        //console.log("DATA: ", DATA);
+
+        this.favoriteJob = this.favoriteJob.bind(this)
+        this.dislikedJob = this.dislikedJob.bind(this)
+        userId = firebase.auth().currentUser.uid;
+
     }
 
     //call every time when we will take something from Deck
@@ -21,7 +29,6 @@ export default class Jobs extends React.Component {
             <Card
                 key={item.child("id").val()}
                 title={item.child("title").val()}>
-                <Image source={{ uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' }} />
                 <Text>
                     {item.child("bossid").val()}
                 </Text>
@@ -43,6 +50,21 @@ export default class Jobs extends React.Component {
         );
     }
 
+    favoriteJob(item) {
+        jobID = item.child("addid").val()
+        ref = firebase.database().ref('users/').child(userId + '/favoriteJob').push(jobID)
+        ref.set(jobID)
+        ref = firebase.database().ref('jobs/').child(jobID + '/favoriteJob').push(userId)
+        ref.set(userId)
+    }
+
+    dislikedJob(item) {
+        jobID = item.child("addid").val()
+        ref = firebase.database().ref('users/').child(userId + '/disliked').push(jobID)
+        ref.set(jobID)
+        ref = firebase.database().ref('jobs/').child(jobID + '/disliked').push(userId)
+        ref.set(userId)
+    }
 
     renderNoMoreCards() {
         return (
@@ -60,13 +82,15 @@ export default class Jobs extends React.Component {
 
     render() {
         const jobsData = this.state.jobs;
-        console.log("JobsDATA: ", jobsData);
         return (
             <View style={styles.container}>
                 <Deck
                     data={jobsData}//{DATA}
                     renderCard={this.renderCard}
                     renderNoMoreCards={this.renderNoMoreCards}
+                    onSwipeRight={job => this.favoriteJob(job)}
+                    onSwipeLeft={job => this.dislikedJob(job)}
+                    keyProp="addid"
                 />
             </View>
         );

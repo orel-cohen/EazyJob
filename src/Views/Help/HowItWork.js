@@ -4,11 +4,7 @@ import Slides from '../Help/Slides'
 
 const SLIDE_DATA = [
     { text: 'Chose Your Categories' },
-<<<<<<< HEAD
     { text: 'Post Ad' },
-=======
-    { text: 'Add Ad' },
->>>>>>> 589e8c3bfe278a32edb4c2e7cc52c295c14a7588
     { text: 'Move To Favorites Interesting Jobs' },
     { text: 'Submit A Request To Work' },
     { text: 'Select Employees' },
