@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { View, Animated, StyleSheet, Text, Linking, Image, FlatList, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Linking, StyleSheet, Text, FlatList, ScrollView } from 'react-native';
 import { Card, Button } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons';
 import * as firebase from "firebase";
 import Firebase from '../../Firebase/Firebase';
-import Deck from '../Swip/Deck'
 
 export default class CallList extends React.Component {
     static navigationOptions = {
@@ -19,21 +17,92 @@ export default class CallList extends React.Component {
             Firebase.initialise();
         } catch (error) { }
         this.state = {
-            name: '',
-            phonenumber: '',
-            //liked: this.props.params.liked,
+            workers: [],
+            liked: this.props.navigation.state.params.adID,
         }
-        console.log(this.props.navigation.state.params.liked);
-
     }
 
+    async componentDidMount() {
+        await this.JobWorkers();
+    }
 
+    async JobWorkers() {
+        let workersIDArray = this.state.liked;
+        let workersArray = []
 
+        try {
+            await workersIDArray.map(async (profile) => {
+                let value = await firebase.database().ref('users/' + profile).once('value', snapshot => {
+                    const va = snapshot.val();
+                    console.log(va)
+                    workersArray.push(snapshot.val())
+                    this.setState({ workers: workersArray })
 
+                    return false;
+                })
+            });
 
+        }
+        catch (e) {
+            console.log('caught error', e);
+            // Handle exceptions
+        }
+    }
+    callToCoordinator = (phone) => {
+        try {
+            if (phone)
+                Linking.openURL('tel:' + phone)
+            else
+                alert('there is some problem')
+        }
+        catch (e) {
+            alert('there is some problem')
+        }
+    }
+    //call every time when we will take something from Deck
+    renderItem(worker) {
+        const { item, index } = worker
+        return (
+            <View key={index}>
+                <Text>
+                    Name: {item.full_name}
+                </Text>
+                {/*<Text>
+                    Rating: {item.rating.sum}
+                </Text>*/}
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        <Button
+                            backgroundColor='#3498db'
+                            title='Profile'>
+                        </Button>
+                    </View>
+                    <View style={styles.button}>
+                        <Button
+                            backgroundColor='green'
+                            title='Call'
+                            onPress={() => Linking.openURL('tel:' + item.phone_num)} />
+                    </View>
+                </View>
+            </View>
+        );
+    }
 
     render() {
-        return false;
+        const WorkersArray = this.state.workers.length > 0 ? this.state.workers : []
+        //console.log('new job array',jobsArray)
+        return (
+            <View>
+                <ScrollView horizontal={false}>
+                    {WorkersArray.length > 0 && <FlatList
+                        data={WorkersArray}
+                        renderItem={this.renderItem}
+                        keyExtractor={(item, index) => { `key-${item.email}` }}
+                    // renderNoMoreCards={this.renderNoMoreCards}
+                    />}
+                </ScrollView>
+            </View>
+        );
     }
 }
 
