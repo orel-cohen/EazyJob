@@ -14,13 +14,14 @@ import Jobs from './src/Views/Swip/Jobs/Jobs'
 import HowItWork from './src/Views/Help/HowItWork'
 import AddAd from './src/Views/AddAd/AddAd'
 import MyAds from './src/Views/MyAds/MyAds'
+import CallList from './src/Views/MyAds/CallList'
 import Profile from './src/Views/Profile/Profile'
 import Settings from './src/Views/Settings/Settings'
 import HotJobs from './src/Views/HotJobs/HotJobs'
 import Search from './src/Views/Search/Search'
 import FavoriteJobs from './src/Views/FavoriteJobs/FavoriteJobs'
 import Contact_Us from './src/Views/Contact_Us/Contact_Us'
-
+import Ratings from './src/Views/Ratings/Ratings'
 
 const Routes = StackNavigator(
   {
@@ -31,6 +32,7 @@ const Routes = StackNavigator(
     Ad:           { screen: Ad },
     TagsList:     { screen: TagsList },
     MyAds:        { screen: MyAds },
+    CallList:     { screen: CallList },
     _Date:        { screen: _Date },
     _Time:        { screen: _Time },
     SignUp:       { screen: SignUp },
@@ -41,7 +43,8 @@ const Routes = StackNavigator(
     HotJobs:      { screen: HotJobs },
     Search:       { screen: Search },
     FavoriteJobs: { screen: FavoriteJobs },
-    Contact_Us:   { screen: Contact_Us}
+    Contact_Us:   { screen: Contact_Us},
+    Ratings:   { screen: Ratings}
   },
   { initialRouteName: 'Login' }
 );

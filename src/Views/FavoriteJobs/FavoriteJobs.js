@@ -44,6 +44,7 @@ export default class FavoriteJobs extends React.Component {
         jobID = ''
         await this.loadData();
     }
+<<<<<<< HEAD
 
 
     async loadData() {
@@ -62,6 +63,31 @@ export default class FavoriteJobs extends React.Component {
             this.setState({ jobsID: jobIDArray })
             await this.loadJobs()
 
+=======
+    async componentWillMount() {
+        console.log("1");
+        //jobID = '';
+        try {
+            console.log("2");
+            //var currentUser = firebase.auth().currentUser.uid;
+            var favoriteID= await this.GetFavoriteID();
+            console.log("123123"+this.state.jobsID);
+            console.log("22222333"+favoriteID);
+
+            /*try {
+                console.log("123");
+                this.state.jobsID.forEach(profile => {
+                    console.log(profile);
+                    firebase.database().ref('jobs/' + profile).once('value', snapshot => {
+                        this.state.myFavoiteJobs.push(snapshot);
+                        console.log(this.state.myFavoiteJobs);
+                    })
+                });
+                console.log("done" + this.state.myFavoiteJobs);
+            } catch (error) {
+                console.log(error.toString())
+            }*/
+>>>>>>> 03f4889c5ee42b22c5d0bcc6b4a51a00ff82faaa
         } catch (error) {
             console.log('caught error', e)
         }
@@ -88,6 +114,21 @@ export default class FavoriteJobs extends React.Component {
             console.log('caught error', e);
         }
     }
+<<<<<<< HEAD
+=======
+
+    async GetFavoriteID(){
+        await firebase.database().ref('users/').child("TL0RQUso3rQWqXZIOwR8UocN5YT2").child("favorite").once('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                jobID = childSnapshot.val();
+                console.log(jobID);
+                this.state.jobsID.push(jobID);
+            })
+        })
+        return jobsID;
+    }
+    async FindDetails() {
+>>>>>>> 03f4889c5ee42b22c5d0bcc6b4a51a00ff82faaa
 
     // "where" refers to where to do the operation - "liked" or "disliked"
     async disliked(job, where) {

@@ -16,6 +16,7 @@ export default class SignUp extends React.Component {
         } catch (error) { }
         //this.transferData=this.transferData.bind(this);
         this.state = {
+            bossName:this.props.navigation.state.params.userName,
             addTitle: "",
             titleValidate: false,
             pay: "",
@@ -53,6 +54,7 @@ export default class SignUp extends React.Component {
                     userId = firebase.auth().currentUser.uid;
                     ref = firebase.database().ref('jobs/').push()
                     let newAd = {
+                        bossName:this.state.bossName,
                         bossId: userId,
                         title: this.state.addTitle,
                         pay: this.state.pay,
@@ -356,29 +358,29 @@ export default class SignUp extends React.Component {
                     selectedValue={this.state.tag1}
                     onValueChange={(tag1) => { this.setState({ tag1 }); }}
                 >
-                    <Picker.Item label="Animals (Keep or Trip)" value="Animals" />
+                    <Picker.Item label="Animals (Keep or Trip)" value="Animals (Keep or Trip)" />
                     <Picker.Item label="Babysitter" value="Babysitter" />
                     <Picker.Item label="Bartender" value="Bartender" />
                     <Picker.Item label="Car owner" value="Car owner" />
                     <Picker.Item label="Cleaning" value="Cleaning" />
                     <Picker.Item label="DJ" value="DJ" />
-                    <Picker.Item label="Events (moderator, clown)" value="Events" />
+                    <Picker.Item label="Events (moderator, clown)" value="Events (moderator, clown)" />
                     <Picker.Item label="Gardening" value="Gardening" />
-                    <Picker.Item label="Inventory counts/arrangement" value="Inventory" />
+                    <Picker.Item label="Inventory counts/arrangement" value="Inventory counts/arrangement" />
                     <Picker.Item label="Kitchen" value="Kitchen" />
                     <Picker.Item label="MakeUp" value="MakeUp" />
                     <Picker.Item label="Photographer" value="Photographer" />
                     <Picker.Item label="Porterage" value="Porterage" />
-                    <Picker.Item label="Private lessons" value="Private" />
+                    <Picker.Item label="Private lessons" value="Private lessons" />
                     <Picker.Item label="Renovations" value="Renovations" />
-                    <Picker.Item label="Security/Ushers" value="Security" />
+                    <Picker.Item label="Security/Ushers" value="Security/Ushers" />
                     <Picker.Item label="Shipments" value="Shipments" />
-                    <Picker.Item label="Translate Articles" value="Translate" />
-                    <Picker.Item label="Volunteering (for free)" value="Volunteering" />
+                    <Picker.Item label="Translate Articles" value="Translate Articles" />
+                    <Picker.Item label="Volunteering (for free)" value="Volunteering (for free)" />
                     <Picker.Item label="Waiters" value="Waiters" />
-                    <Picker.Item label="Work from home" value="Home" />
-                    <Picker.Item label="Work in nights" value="Night" />
-                    <Picker.Item label="Work in weekend" value="Weekend" />
+                    <Picker.Item label="Work from home" value="Work from home" />
+                    <Picker.Item label="Work in nights" value="Work in nights" />
+                    <Picker.Item label="Work in weekend" value="Work in weekend" />
                     <Picker.Item label="Other" value="Other" />
                 </Picker>
 
