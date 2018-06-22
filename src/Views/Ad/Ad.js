@@ -36,33 +36,49 @@ export default class Ad extends React.Component {
       favorite: "",
       liked: "",
       disliked: "",
+      adID: this.props.navigation.state.params.id,
     }
   }
   async componentWillMount() {
     var jobProfile = null;
+    let id = this.state.adID
+    console.log('this.state.adID: ',id)
     try {
-      await firebase.database().ref('jobs/').child("-LDpVhPlyOxQ1KJcvVGL").once('value', snapshot => {
-        var jobProfile = snapshot.val();
+      await firebase.database().ref('jobs/').child(id).once('value', snapshot => {
+        jobProfile = snapshot.val();
+        console.log('jobProfile: ',jobProfile)
         /*console.log("Author: " + jobProfile.bossId);
         this.state.bossId = jobProfile.bossId;
         console.log("Title: " + jobProfile.city);
         console.log("asdasd: " + this.state.bossId);*/
         this.state.bossId = jobProfile.bossId;
+        console.log('this.state.bossId: ',this.state.bossId)
         this.state.title = jobProfile.title;
+        console.log('this.state.title: ',this.state.title)
         this.state.pay = jobProfile.pay;
+        console.log('this.state.pay: ',this.state.pay)
         this.state.city = jobProfile.city;
+        console.log('this.state.city: ',this.state.city)
         this.state.place = jobProfile.place;
+        console.log('this.state.place: ',this.state.place)
         this.state.date = jobProfile.date;
+        console.log('this.state.date: ',this.state.date)
         this.state.start = jobProfile.start;
-        console.log("ssss: " + jobProfile.start);
-        console.log(this.state.start);
+        console.log('this.state.start: ',this.state.start)
         this.state.end = jobProfile.end;
+        console.log('this.state.end: ',this.state.end)
         this.state.tag1 = jobProfile.tag1;
+        console.log('this.state.tag1: ',this.state.tag1)
         this.state.tag2 = jobProfile.tag2;
+        console.log('this.state.tag2: ',this.state.tag2)
         this.state.tag3 = jobProfile.tag3;
+        console.log('this.state.tag3: ',this.state.tag3)
         this.state.image = jobProfile.image;
+        console.log('this.state.image: ',this.state.image)
         this.state.remarks = jobProfile.remarks;
+        console.log('this.state.remarks: ',this.state.remarks)
         this.state.liked = jobProfile.liked;
+        console.log('this.state.liked: ',this.state.liked)
       })
     } catch (error) {
       console.log(error.toString())

@@ -108,18 +108,22 @@ export default class HotJobs extends React.Component {
             Firebase.initialise();
         } catch (error) { }
         //this.transferData=this.transferData.bind(this);
+        let today = this.getToday()
         this.state = {
             selectedItems: [],
             cityValidate: true,
             succesToCraete: false,
-            date: "",
+            date: today,
             endTime: "",
             endTimeValidate: false,
         };
 
+        
         this.filterJobs = this.filterJobs.bind(this);
         this.JobSearch = this.JobSearch.bind(this);
+        his.getToday = his.getToday.bind(this)
     }
+
     onSelectedItemsChange = (selectedItems) => {
         this.setState({ selectedItems });
     }
@@ -133,11 +137,28 @@ export default class HotJobs extends React.Component {
 
         if (this.state.selectedItems && this.state.selectedItems.length > 0) {
             setTimeout(() => {
-                this.props.navigation.navigate('Jobs', { selectedItems: this.state.emaselectedItemsil, jobs: filtered})
+                this.props.navigation.navigate('Jobs', { selectedItems: this.state.emaselectedItemsil, jobs: filtered })
             }, 1500);
         } else {
             Alert.alert("Hi, littele problem", "please choose cities");
         }
+    }
+
+    getToday = () => {
+
+        let dateInterface = new Date();
+        let day = dateInterface.getDate();
+        let month = dateInterface.getMonth() + 1;
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+        let today = day + '-' + month + '-' + dateInterface.getFullYear()
+
+        return today
+
     }
 
     async filterJobs() {
@@ -152,8 +173,9 @@ export default class HotJobs extends React.Component {
         //let day = dateInterface.getDate();
         //let month = dateInterface.getMonth();
         //let year = dateInterface.getFullYear();
-        let dates=[];
-        dateInterface.setDate(dateInterface.getDate() +2)
+        let dates = [];
+        // dateInterface.setDate(dateInterface.getDate() +2)
+
 
         let day = dateInterface.getDate();
         let month = dateInterface.getMonth() + 1;
@@ -162,10 +184,10 @@ export default class HotJobs extends React.Component {
             dateInterface.setDate(dateInterface.getDate() + 1);
             day = dateInterface.getDate();
             month = dateInterface.getMonth() + 1;
-            if(day < 10) {
+            if (day < 10) {
                 day = '0' + day;
             }
-            if(month < 10) {
+            if (month < 10) {
                 month = '0' + month;
             }
             console.log(day + '-' + month + '-' + dateInterface.getFullYear);
@@ -185,8 +207,8 @@ export default class HotJobs extends React.Component {
 
         let ref = await firebase.database().ref().once('value', snapshot => {
 
-            search   = snapshot.child('HotJobSearch');
-            jobsRef  = snapshot.child('jobs');
+            search = snapshot.child('HotJobSearch');
+            jobsRef = snapshot.child('jobs');
 
 
             snapshot.child('users/' + currentUserID + '/favorite').forEach(id => {
@@ -195,7 +217,7 @@ export default class HotJobs extends React.Component {
             snapshot.child('users/' + currentUserID + '/disliked').forEach(id => {
                 disliked.push(id.val());
             });;
-            snapshot.child('users/' + currentUserID + '/liked'   ).forEach(id => {
+            snapshot.child('users/' + currentUserID + '/liked').forEach(id => {
                 liked.push(id.val());
             });;
 
@@ -205,27 +227,27 @@ export default class HotJobs extends React.Component {
 
             console.log('search: ', search);
 
-            this.state.selectedItems.forEach(async(city) => {
-                
+            this.state.selectedItems.forEach(async (city) => {
+
                 console.log('search.child(city): ', search.child(city));
-                dates.forEach(async(date) => {
+                dates.forEach(async (date) => {
                     let jobID = [];
-                    
+
                     let jobsTest = [];
-                    
+
                     snapshot.child('HotJobSearch').child(city).child(date).forEach(childSnapshot => {
-                        
-                        console.log('childSnapshot: ',childSnapshot.val());
+
+                        console.log('childSnapshot: ', childSnapshot.val());
                         //jobID.push(childSnapshot);
                         console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-                        
+
                         console.log(snapshot.child('jobs').child(childSnapshot.val()));
                         console.log('Current ID: ', childSnapshot.val());
                         console.log(!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val())))
-                        
-                        if(!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val()))) {
+
+                        if (!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val()))) {
                             console.log('*******************************************************');
-                            let job = snapshot.child('jobs/'+childSnapshot.val());
+                            let job = snapshot.child('jobs/' + childSnapshot.val());
                             console.log("childSnapshot: \n", childSnapshot);
                             console.log("childSnapshot.val(): \n", childSnapshot.val());
                             console.log(city);
@@ -241,7 +263,7 @@ export default class HotJobs extends React.Component {
         console.log("FILTERED: ", filtered);
 
         return filtered;
-        
+
 
     }
 
@@ -260,7 +282,7 @@ export default class HotJobs extends React.Component {
                     onSelectedItemsChange={this.onSelectedItemsChange}
                     selectedItems={this.state.selectedItems}
                 />
-{/*
+                {/*
                 <Text>Select Date:</Text>
                 <DatePicker
                     style={{ width: 200 }[styles.input,

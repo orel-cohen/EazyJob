@@ -1,26 +1,17 @@
+
 import React from 'react';
-import { StyleSheet, ScrollView, FlatList, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, ScrollView, FlatList, Text, View, TouchableOpacity, Alert, Button } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { MaterialIcons, MaterialCommunityIcons, Entypo, } from '@expo/vector-icons';
 import * as firebase from "firebase";
 import Firebase from '../../Firebase/Firebase';
-import { Button } from 'react-native-elements'
 
 
 const DATA = [
-    { id: 1, text: 'Job #1', boss: 'Boss #1', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' },
-    { id: 2, text: 'Job #2', boss: 'Boss #2', dStart: '01/01/0001', place: 'Home', uri: 'http://www.fluxdigital.co/wp-content/uploads/2015/04/Unsplash.jpg' },
-    { id: 3, text: 'Job #3', boss: 'Boss #3', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
-    { id: 4, text: 'Job #4', boss: 'Boss #4', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
-    { id: 5, text: 'Job #5', boss: 'Boss #5', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' },
-    { id: 6, text: 'Job #6', boss: 'Boss #6', dStart: '01/01/0001', place: 'Home', uri: 'http://www.fluxdigital.co/wp-content/uploads/2015/04/Unsplash.jpg' },
-    { id: 11, text: 'Job #3', boss: 'Boss #3', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
-    { id: 111, text: 'Job #4', boss: 'Boss #4', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
-    { id: 1111, text: 'Job #5', boss: 'Boss #5', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg' },
-    { id: 222, text: 'Job #6', boss: 'Boss #6', dStart: '01/01/0001', place: 'Home', uri: 'http://www.fluxdigital.co/wp-content/uploads/2015/04/Unsplash.jpg' },
-    { id: 7, text: 'Job #7', boss: 'Boss #7', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
-    { id: 8, text: 'Job #8', boss: 'Boss #8', dStart: '01/01/0001', place: 'Home', uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
-];
+    { "bossId": "x1PQdlBeCafCByhrUPcvF4Elv693", "title": "Private Baby Porterage", "city": "Bnei Brak - Givat Shmuel", "pay": "200", "date": "17-06-2018", "start": "14:50" },
+    { "bossId": "TL0RQUso3rQWqXZIOwR8UocN5YT2", "title": "Haim", "city": "Beer Sheva Area", "pay": "35", "date": "21-06-20118", "start": "15:30" },
+    { "bossId": "TL0RQUso3rQWqXZIOwR8UocN5YT2", "title": "Dog Walker", "city": "Haifa Area", "pay": "50", "date": "15-06-2018", 'start': "12:27" },
+]
 
 export default class FavoriteJobs extends React.Component {
     static navigationOptions = {
@@ -28,96 +19,171 @@ export default class FavoriteJobs extends React.Component {
     };
     constructor(props) {
         super(props);
-        //console.ignoredYellowBox = [
-        //  'Setting a timer'
-        //];
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ]
         try {
             Firebase.initialise();
         } catch (error) { }
         this.state = {
             myFavoiteJobs: [],
-            jobsID: []
-
+            jobsID: [],
+            currentUserId: 'BPJlfxwcunNHIEviueeKxsQiOqG2',//firebase.auth().currentUser.uid,
+            test: '',
         }
+
+        this.loadData = this.loadData.bind(this)
+        this.loadJobs = this.loadJobs.bind(this)
+        this.renderItem = this.renderItem.bind(this)
+        this.showDetails = this.showDetails.bind(this)
+        this.disliked = this.disliked.bind(this)
+        this.liked = this.liked.bind(this)
     }
-    async componentWillMount() {
-        console.log("1");
-        jobID = '';
+    //componentWillMount
+    async componentDidMount() {
+        jobID = ''
+        await this.loadData();
+    }
+
+
+    async loadData() {
+        let uid = this.state.currentUserId
+        let jobIDArray = []
         try {
-            console.log("2");
-            //var currentUser = firebase.auth().currentUser.uid;
-            await firebase.database().ref('users/').child("TL0RQUso3rQWqXZIOwR8UocN5YT2").child("favorite").once('value', snapshot => {
+            let value = await firebase.database().ref('users/').child(uid).child("favorite").once('value', snapshot => {
                 snapshot.forEach(childSnapshot => {
-                    jobID = childSnapshot.val();
-                    console.log(jobID);
-                    this.state.jobsID.push(jobID);
+                    if (childSnapshot.val() != "0") {
+                        jobID = childSnapshot.val()
+                        jobIDArray.push(jobID);
+                    }
                 })
             })
-            console.log("123123"+this.state.jobsID);
+            console.log('jobIDArray: ', jobIDArray)
+            this.setState({ jobsID: jobIDArray })
+            await this.loadJobs()
 
-            /*try {
-                console.log("123");
-                this.state.jobsID.forEach(profile => {
-                    console.log(profile);
-                    firebase.database().ref('jobs/' + profile).once('value', snapshot => {
-                        this.state.myFavoiteJobs.push(snapshot);
-                        console.log(this.state.myFavoiteJobs);
-                    })
-                });
-                console.log("done" + this.state.myFavoiteJobs);
-            } catch (error) {
-                console.log(error.toString())
-            }*/
         } catch (error) {
-            console.log(error.toString())
+            console.log('caught error', e)
         }
     }
-    async FindDetails() {
 
+    async loadJobs() {
+        let jobIDArray = this.state.jobsID
+        let myJobsArray = [];
+        try {
+            await jobIDArray.map(async (id) => {
+                let value = await firebase.database().ref('jobs/' + id).once('value', snapshot => {
+                    const va = snapshot.val();
+                    console.log('va: ', va);
+                    myJobsArray.push(va);
+                    console.log('myJobsArray: ', myJobsArray)
+                    this.setState({ myFavoiteJobs: myJobsArray })
+
+                    return false;
+                })
+            })
+
+        }
+        catch (e) {
+            console.log('caught error', e);
+        }
     }
-    renderItem(item) {
-        return (
-            <View style={styles.cardStyle}>
-                <View style={styles.containerStyle}>
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.headerTextStyle}>Title: </Text>
-                        <Text style={styles.headerTextStyle}>Publish By: </Text>
-                    </View>
-                </View>
-                <View style={styles.containerStyle}>
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.headerTextStyle}>City: </Text>
-                        <Text style={styles.headerTextStyle}>Pay: </Text>
-                        <Text style={styles.headerTextStyle}>Date: </Text>
-                        <Text style={styles.headerTextStyle}>Start Time: </Text>
-                    </View>
-                </View>
-                <View style={styles.containerStyle}>
-                    <View style={styles.headerContainer}>
-                        <View style={styles.buttonContainer}>
-                            <View style={styles.button}>
-                                <Button
-                                    backgroundColor='red'
-                                    title='Bye!'
-                                    icon={{ name: 'close' }}
 
-                                />
-                            </View>
-                            <View style={styles.button}>
-                                <Button
-                                    backgroundColor='#3498db'
-                                    title='Details'
-                                    icon={{ name: 'menu' }}
-                                >
-                                </Button>
-                            </View>
-                            <View style={styles.button}>
-                                <Button backgroundColor='green'
-                                    title='Work!'
-                                    width='33%'
-                                    icon={{ name: 'check' }}
-                                >
-                                </Button>
+    // "where" refers to where to do the operation - "liked" or "disliked"
+    async disliked(job, where) {
+        uid = this.state.currentUserId
+        jobID = job.addid
+
+        ref = firebase.database().ref('users/').child(uid + '/' + where).child(jobID).set(jobID)
+        ref = firebase.database().ref('users/').child(uid + '/favorite').child(jobID).remove()
+
+        ref = firebase.database().ref('jobs/').child(jobID + '/' + where).child(uid).set(uid)
+        ref = firebase.database().ref('jobs/').child(jobID + '/favorite').child(uid).remove()
+
+        let jobs = this.state.myFavoiteJobs
+        let index = jobs.indexOf(job)
+        console.log('index: ', index)
+        if (index != -1) {
+            jobs.splice(index, 1)
+        }
+        this.setState({
+            myFavoiteJobs: jobs,
+        })
+    }
+
+    async liked(job) {
+        
+    }
+
+    async showDetails(job) {
+        let id = job.addid + ''
+        console.log('id: ', id)
+        this.props.navigation.navigate('Ad', { id: id })
+    }
+
+    renderItem(job) {
+        const { item, index } = job
+        console.log('job: ', job)
+        console.log('itemID: ', item.addid)
+        console.log('index: ', index)
+        return (
+            <View key={index}>
+                <View style={styles.cardStyle}>
+                    <View style={styles.containerStyle}>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.headerTextStyle}>
+                                Title: {item.title}
+                            </Text>
+                            <Text style={styles.headerTextStyle}>
+                                Publish By: {item.bossName/*() => this.props.getBossName(item)*/}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.containerStyle}>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.headerTextStyle}>
+                                City: {item.city}
+                            </Text>
+                            <Text style={styles.headerTextStyle}>
+                                Pay: {item.pay}
+                            </Text>
+                            <Text style={styles.headerTextStyle}>
+                                Date: {item.date}
+                            </Text>
+                            <Text style={styles.headerTextStyle}>
+                                Start Time: {item.start}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.containerStyle}>
+                        <View style={styles.headerContainer}>
+                            <View style={styles.buttonContainer}>
+                                <View style={styles.button}>
+                                    <Button
+                                        onPress={() => this.disliked(item, 'disliked')}
+                                        backgroundColor='red'
+                                        title='Bye!'
+                                        icon={{ name: 'close' }}
+
+                                    />
+                                </View>
+                                <View style={styles.button}>
+                                    <Button
+                                        onPress={() => this.showDetails(item)}
+                                        backgroundColor='#3498db'
+                                        title='Details'
+                                        icon={{ name: 'menu' }}
+                                    />
+                                </View>
+                                <View style={styles.button}>
+                                    <Button
+                                        onPress={() => this.disliked(item, 'liked')}
+                                        backgroundColor='green'
+                                        title='Work!'
+                                        width='33%'
+                                        icon={{ name: 'check' }}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -127,15 +193,17 @@ export default class FavoriteJobs extends React.Component {
     }
 
     render() {
+        const jobsArray = this.state.myFavoiteJobs
+        console.log('jobsArray: ', jobsArray)
         return (
             <View>
                 <ScrollView horizontal={false}>
-                    <FlatList
-                        data={DATA}
+                    {jobsArray.length > 0 && <FlatList
+                        data={jobsArray}
                         renderItem={this.renderItem}
-                        keyExtractor={(item, index) => index}
-                    // renderNoMoreCards={this.renderNoMoreCards}
-                    />
+                        // renderNoMoreCards={this.renderNoMoreCards}
+                        keyExtractor={(item, index) => { `key-${item.addid}` }}
+                    />}
                 </ScrollView>
             </View>
         );

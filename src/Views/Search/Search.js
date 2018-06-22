@@ -105,14 +105,18 @@ const items = [
 export default class Search extends React.Component {
     constructor(props) {
         super(props);
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ]
         try {
             Firebase.initialise();
         } catch (error) { }
         //this.transferData=this.transferData.bind(this);
+        let today = this.getDate()
         this.state = {
             selectedItems: [],
             cityValidate: true,
-            date: "",
+            date: today,
             dateValidate: true,
             /*endDate: "",
             endDateValidate: true,
@@ -124,6 +128,24 @@ export default class Search extends React.Component {
             jobsList: null,
         };
     }
+
+    getDate = () => {
+
+        let dateInterface = new Date();
+        let day = dateInterface.getDate();
+        let month = dateInterface.getMonth() + 1;
+        if(day < 10) {
+            day = '0' + day;
+        }
+        if(month < 10) {
+            month = '0' + month;
+        }
+        let today = day + '-' + month + '-' + dateInterface.getFullYear()
+
+        return today
+
+    }
+
     onSelectedItemsChange = (selectedItems) => {
         this.setState({ selectedItems });
     }
@@ -138,7 +160,7 @@ export default class Search extends React.Component {
 
         if (this.state.selectedItems && this.state.selectedItems.length > 0) {
             setTimeout(() => {
-                this.props.navigation.navigate('Jobs', { selectedItems: this.state.selectedItems, startDate: this.state.startDate, endDate: this.state.endDate, startTime: this.state.startTime, endTime: this.state.endTime, jobs: filtered })
+                this.props.navigation.navigate('Jobs', { selectedItems: this.state.selectedItems, startDate: this.state.startDate, /*endDate: this.state.endDate,*/ startTime: this.state.startTime, endTime: this.state.endTime, jobs: filtered })
             }, 1500);
         } else {
             Alert.alert("Hi, little problem", "please choose cities");
