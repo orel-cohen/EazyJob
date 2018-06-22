@@ -52,9 +52,9 @@ export default class Jobs extends React.Component {
 
     favoriteJob(item) {
         jobID = item.child("addid").val()
-        ref = firebase.database().ref('users/').child(userId + '/favoriteJob').push(jobID)
+        ref = firebase.database().ref('users/').child(userId + '/favorite').push(jobID)
         ref.set(jobID)
-        ref = firebase.database().ref('jobs/').child(jobID + '/favoriteJob').push(userId)
+        ref = firebase.database().ref('jobs/').child(jobID + '/favorite').push(userId)
         ref.set(userId)
     }
 

@@ -79,7 +79,7 @@ export default class MyAds extends React.Component {
             console.log('caught error', e);
             // Handle exceptions
         }
-        //console.log("done!!!!!!!!!!!" + this.state.myJobs);
+        console.log("done!!!!!!!!!!!" + this.state.myJobsArray);
     }
     //call every time when we will take something from Deck
     renderItem(job) {

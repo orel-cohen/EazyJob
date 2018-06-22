@@ -12,8 +12,8 @@ var username = "empty";
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
-      };
-      
+    };
+
     constructor(props) {
         console.ignoredYellowBox = [
             'Setting a timer'
@@ -21,83 +21,92 @@ export default class HomeScreen extends React.Component {
         super(props);
         try {
             Firebase.initialise();
-        } catch (error) {}
+        } catch (error) { }
         //this.getName = this.getName.bind(this);
-        this.state={
+        this.state = {
+            fullName: '',
             nameToDisplay: "",
             //currUserID: firebase.auth().currentUser.uid,
         }
         //this.getName();
-        //console.log(this.state.currUserID)
+
+
     }
-   
-    // getName()
-    // {
-        
-    //     var database = firebase.database();
+    async componentDidMount() {
+        jobID = '';
+        await this.MyAdsID();
 
-    ////////////////
-    //     var userId = firebase.auth().currentUser.uid; getting the userID
-    /////////////
+    }
 
-    //     firebase.database().ref('users/' + userId).once('value').then(function(snapshot) {
-    //         username = (snapshot.val() && snapshot.val().full_name) || 'Anonymous';
-    //         console.log(username)
-    //         //this.props.navigation.setParams({otherParam:username+'!'})
-    //           // ...
-    //     });
-    //     //  get empty username, why?
-    //     //  Alert.alert(username,"test");
-    // }
-    /*static navigationOptions = ({ navigation }) => {
-        //header: (props)=>(title:name)
-         const { params } = navigation.state;
-        
-         return {
-           title: params ? 'Hi '+params.namePar : 'Welcome',
-         }
-    };*/
+    async MyAdsID() {
+        //var currentUser = firebase.auth().currentUser.uid;
+        let name = ''
+        try {
+            let value = await firebase.database().ref('users/').child(firebase.auth().currentUser.uid).child("full_name").once('value', async (snapshot) => {
+                const va = snapshot.val();
+                console.log("1" + va);
+                // this.state.jobsID.push(jobID);
+                name=va;
+                this.state.fullName=va;
+            this.setState({ fullName: va })
+
+            })
+           // console.log("2" + name);
+            //this.setState({ fullName: jobIDArray })
+            //console.log("3" + this.state.fullName);
+
+        }
+        catch (e) {
+            console.log('caught error', e);
+            // Handle exceptions
+        }
+        //console.log("done!!!" + this.state.jobsID);
+    }
     //////////////////////////////////////////////////////
     //put full name name//<Text>{this.state.currUserID}</Text>
-////////////////////////////////////////////
-    render(){
-        return(
-            
+    ////////////////////////////////////////////
+    render() {
+        return (
+
             <View style={styles.mainStyle}>
                 <View style={styles.lineStyle}>
                     <Text style={styles.textView}>Logo here</Text>
                 </View>
                 <View style={styles.lineStyle}>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=> this.props.navigation.navigate('Profile', {currUserID: firebase.auth().currentUser.uid, isCurrUser: true})}>
-                        <MaterialIcons name="face" size={60} color="#ffffff" backgroundColor="#4286f4"/>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('Profile', { currUserID: firebase.auth().currentUser.uid, isCurrUser: true })}>
+                        <MaterialIcons name="face" size={50} color="#ffffff" backgroundColor="#4286f4" />
                         <Text style={styles.textView}>Profile</Text>
-                    </TouchableOpacity>                
-                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('AddAd')}>
-                        <Entypo name="pin" size={60} color="#ffffff" title="Add Ad" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('AddAd',{ userName: this.state.fullName })}>
+                        <Entypo name="pin" size={50} color="#ffffff" title="Add Ad" />
                         <Text style={styles.textView}>Add Ad</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('MyAds')}>
-                        <MaterialCommunityIcons name="worker" size={60} color="#ffffff" title="My Jobs" />
+                        <MaterialCommunityIcons name="worker" size={50} color="#ffffff" title="My Jobs" />
                         <Text style={styles.textView}>My Ads</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.lineStyle}>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('HotJobs')}>
-                        <MaterialCommunityIcons name="fire" size={60} color="#ffffff" backgroundColor="#4286f4" title="EazyJob" />
+                        <MaterialCommunityIcons name="fire" size={50} color="#ffffff" backgroundColor="#4286f4" title="EazyJob" />
                         <Text style={styles.textView}>EazyJob</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('Search')}>
-                        <MaterialIcons name="location-searching" size={60} color="#ffffff" title="Search" />
+                        <MaterialIcons name="location-searching" size={50} color="#ffffff" title="Search" />
                         <Text style={styles.textView}>Search</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('FavoriteJobs')}>
-                        <MaterialCommunityIcons name="bookmark-check" size={60} color="#ffffff" title="Favorites" />
+                        <MaterialCommunityIcons name="bookmark-check" size={50} color="#ffffff" title="Favorites" />
                         <Text style={styles.textView}>Favorites</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.lineStyle}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('Ratings')}>
+                        <MaterialIcons name="rate-review" size={50} color="#ffffff" backgroundColor="#4286f4" title="Rate" />
+                        <Text style={styles.textView}>Rate</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('Settings')}>
-                        <MaterialCommunityIcons name="settings" size={60} color="#ffffff" backgroundColor="#4286f4" title="Settings" />
+                        <MaterialCommunityIcons name="settings" size={50} color="#ffffff" backgroundColor="#4286f4" title="Settings" />
                         <Text style={styles.textView}>Settings</Text>
                     </TouchableOpacity>
                 </View>
@@ -113,24 +122,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         flexDirection: 'column',
-        
+
     },
-    lineStyle:{
-        flex:1,
+    lineStyle: {
+        flex: 1,
         flexDirection: 'row',
         //alignItems: 'center',
         justifyContent: 'space-around',
-        paddingVertical:30
+        paddingVertical: 30
     },
-    textView:{
-        color:'#ffffff',
+    textView: {
+        color: '#ffffff',
         textAlign: 'center'
     },
     buttonStyle: {
-        flex:1,
+        flex: 1,
         flexDirection: 'column',
         //justifyContent: 'center',
         alignItems: 'center',
-        
+
     }
 })

@@ -21,7 +21,7 @@ import HotJobs from './src/Views/HotJobs/HotJobs'
 import Search from './src/Views/Search/Search'
 import FavoriteJobs from './src/Views/FavoriteJobs/FavoriteJobs'
 import Contact_Us from './src/Views/Contact_Us/Contact_Us'
-
+import Ratings from './src/Views/Ratings/Ratings'
 
 const Routes = StackNavigator(
   {
@@ -43,7 +43,8 @@ const Routes = StackNavigator(
     HotJobs:      { screen: HotJobs },
     Search:       { screen: Search },
     FavoriteJobs: { screen: FavoriteJobs },
-    Contact_Us:   { screen: Contact_Us}
+    Contact_Us:   { screen: Contact_Us},
+    Ratings:   { screen: Ratings}
   },
   { initialRouteName: 'Login' }
 );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Linking, StyleSheet, Text, FlatList, ScrollView } from 'react-native';
-import { Card, Button } from 'react-native-elements';
+import { CheckBox, Button } from 'react-native-elements';
 import * as firebase from "firebase";
 import Firebase from '../../Firebase/Firebase';
 
@@ -48,17 +48,7 @@ export default class CallList extends React.Component {
             // Handle exceptions
         }
     }
-    callToCoordinator = (phone) => {
-        try {
-            if (phone)
-                Linking.openURL('tel:' + phone)
-            else
-                alert('there is some problem')
-        }
-        catch (e) {
-            alert('there is some problem')
-        }
-    }
+
     //call every time when we will take something from Deck
     renderItem(worker) {
         const { item, index } = worker
@@ -77,6 +67,9 @@ export default class CallList extends React.Component {
                             title='Profile'>
                         </Button>
                     </View>
+                    <CheckBox
+                        title='Employed'
+                    />
                     <View style={styles.button}>
                         <Button
                             backgroundColor='green'
@@ -151,7 +144,7 @@ const styles = StyleSheet.create({
     button: {
         borderWidth: 1,
         padding: 5,
-        width: '50%',
+        width: '30%',
         height: 40
     }
 });

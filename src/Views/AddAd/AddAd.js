@@ -16,6 +16,7 @@ export default class SignUp extends React.Component {
         } catch (error) { }
         //this.transferData=this.transferData.bind(this);
         this.state = {
+            bossName:this.props.navigation.state.params.userName,
             addTitle: "",
             titleValidate: false,
             pay: "",
@@ -53,6 +54,7 @@ export default class SignUp extends React.Component {
                     userId = firebase.auth().currentUser.uid;
                     ref = firebase.database().ref('jobs/').push()
                     let newAd = {
+                        bossName:this.state.bossName,
                         bossId: userId,
                         title: this.state.addTitle,
                         pay: this.state.pay,
