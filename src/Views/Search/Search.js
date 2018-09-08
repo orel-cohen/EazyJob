@@ -103,11 +103,14 @@ const items = [
 ]
 
 export default class Search extends React.Component {
+    static navigationOptions = {
+        title: 'Search',
+    };
     constructor(props) {
-        super(props);
         console.ignoredYellowBox = [
             'Setting a timer'
         ]
+        super(props);
         try {
             Firebase.initialise();
         } catch (error) { }
@@ -199,6 +202,7 @@ export default class Search extends React.Component {
         var favorite = [];
         var disliked = [];
         var liked = [];
+        var myAds = [];
         var dateReq = '';
         console.log('ID: ', currentUserID);
 
@@ -215,9 +219,13 @@ export default class Search extends React.Component {
             snapshot.child('users/' + currentUserID + '/disliked').forEach(id => {
                 disliked.push(id.val());
             });;
-            snapshot.child('users/' + currentUserID + '/liked'   ).forEach(id => {
+            snapshot.child('users/' + currentUserID + '/liked').forEach(id => {
                 liked.push(id.val());
             });;
+            snapshot.child('users/' + currentUserID + '/ads').forEach(id => {
+                myAds.push(id.val());
+            });;
+            
         });
 
         var j = 0;
@@ -257,8 +265,8 @@ export default class Search extends React.Component {
                 jobID.forEach(id => {
                     console.log("Job Id: ", id);
                     console.log(favorite.includes(id));
-                    console.log((favorite.includes(id) || liked.includes(id) || disliked.includes(id) || idArr.includes(id)));
-                    if(!(favorite.includes(id) || liked.includes(id) || disliked.includes(id) || idArr.includes(id) || idArr.includes(id))) {
+                    console.log((favorite.includes(id) || liked.includes(id) || disliked.includes(id) || idArr.includes(id) || myAds.includes(id)));
+                    if(!(favorite.includes(id) || liked.includes(id) || disliked.includes(id) || idArr.includes(id) || idArr.includes(id) || myAds.includes(id))) {
                         id = "" + id;
                         job = jobsRef.child(id);
 

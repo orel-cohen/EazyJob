@@ -11,13 +11,11 @@ import { Ionicons } from '@expo/vector-icons';
 var username = "empty";
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
-        title: 'Welcome',
+        title: 'Welcome ',
     };
 
     constructor(props) {
-        console.ignoredYellowBox = [
-            'Setting a timer'
-        ]
+        console.disableYellowBox = true
         super(props);
         try {
             Firebase.initialise();
@@ -45,6 +43,7 @@ export default class HomeScreen extends React.Component {
             let value = await firebase.database().ref('users/').child(firebase.auth().currentUser.uid).child("full_name").once('value', async (snapshot) => {
                 const va = snapshot.val();
                 console.log("1" + va);
+                console.log('uid: ',firebase.auth().currentUser.uid)
                 // this.state.jobsID.push(jobID);
                 name=va;
                 this.state.fullName=va;
@@ -58,7 +57,7 @@ export default class HomeScreen extends React.Component {
         }
         catch (e) {
             console.log('caught error', e);
-            // Handle exceptions
+            // Handle exceptions Working from home
         }
         //console.log("done!!!" + this.state.jobsID);
     }
@@ -70,7 +69,7 @@ export default class HomeScreen extends React.Component {
 
             <View style={styles.mainStyle}>
                 <View style={styles.lineStyle}>
-                    <Text style={styles.textView}>Logo here</Text>
+                    {/*<Text style={styles.textView}>Logo here</Text>*/}
                 </View>
                 <View style={styles.lineStyle}>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('Profile', { currUserID: firebase.auth().currentUser.uid, isCurrUser: true })}>

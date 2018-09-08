@@ -9,9 +9,11 @@ import DismissKeyboard from "dismissKeyboard";
 export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
+        console.disableYellowBox = true
         try {
             Firebase.initialise();
         } catch (error) { }
+        firebase.auth().signOut()
         this.transferData = this.transferData.bind(this);
         this.state = {
             email: "",

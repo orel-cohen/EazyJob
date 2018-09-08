@@ -10,6 +10,7 @@ export default class Jobs extends React.Component {
 
     constructor(props) {
         super(props);
+        console.disableYellowBox = true
         try {
             Firebase.initialise();
         } catch (error) { }
@@ -17,8 +18,7 @@ export default class Jobs extends React.Component {
             jobs: this.props.navigation.state.params.jobs
         }
 
-        this.favoriteJob = this.favoriteJob.bind(this)
-        this.dislikedJob = this.dislikedJob.bind(this)
+        this.moveJob = this.moveJob.bind(this)
         userId = firebase.auth().currentUser.uid;
 
     }
@@ -50,20 +50,24 @@ export default class Jobs extends React.Component {
         );
     }
 
-    favoriteJob(item) {
+    /*favoriteJob(item) {
         jobID = item.child("addid").val()
         ref = firebase.database().ref('users/').child(userId + '/favorite').push(jobID)
         ref.set(jobID)
         ref = firebase.database().ref('jobs/').child(jobID + '/favorite').push(userId)
         ref.set(userId)
-    }
+    }*/
 
-    dislikedJob(item) {
+    moveJob(item, where) {
         jobID = item.child("addid").val()
-        ref = firebase.database().ref('users/').child(userId + '/disliked').push(jobID)
+        /*ref = firebase.database().ref('users/').child(userId + '/disliked').push(jobID)
         ref.set(jobID)
         ref = firebase.database().ref('jobs/').child(jobID + '/disliked').push(userId)
-        ref.set(userId)
+        ref.set(userId)*/
+
+        ref = firebase.database().ref('users/').child(userId + '/' + where).child(jobID).set(jobID)
+
+        ref = firebase.database().ref('jobs/').child(jobID + '/' + where).child(userId).set(userId)
     }
 
     renderNoMoreCards() {
@@ -88,8 +92,8 @@ export default class Jobs extends React.Component {
                     data={jobsData}//{DATA}
                     renderCard={this.renderCard}
                     renderNoMoreCards={this.renderNoMoreCards}
-                    onSwipeRight={job => this.favoriteJob(job)}
-                    onSwipeLeft={job => this.dislikedJob(job)}
+                    onSwipeRight={job => this.moveJob(job, 'favorite')}
+                    onSwipeLeft={job => this.moveJob(job, 'disliked')}
                     keyProp="addid"
                 />
             </View>

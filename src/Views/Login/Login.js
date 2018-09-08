@@ -102,7 +102,6 @@ export default class Login extends React.Component {
       }
 
       getInitialView() {
-
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 // User is signed in.
@@ -127,6 +126,10 @@ export default class Login extends React.Component {
 
     async login() {
 
+        
+        firebase.auth().signOut()
+        console.log("signedout")
+        
         DismissKeyboard();//down/close the keyboard
         if (this.state.email == "" || this.state.password == "") {
             Alert.alert("Hi:)", "For login you should fill out email & password\nor just SignUp:)")
@@ -205,10 +208,11 @@ export default class Login extends React.Component {
                 >
                 Not a member? SignUp
                 </Text>
+                {/*
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
                     <Image 
                     source={require('../../Assets/google.png')}/>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
                        
             </KeyboardAvoidingView>
             

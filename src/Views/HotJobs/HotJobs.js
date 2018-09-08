@@ -102,11 +102,15 @@ const items = [
     },
 ]
 export default class HotJobs extends React.Component {
+    static navigationOptions = {
+        title: 'Hot Jobs',
+    };
     constructor(props) {
         super(props);
         try {
             Firebase.initialise();
         } catch (error) { }
+        console.disableYellowBox = true
         //this.transferData=this.transferData.bind(this);
         let today = this.getToday()
         this.state = {
@@ -121,7 +125,7 @@ export default class HotJobs extends React.Component {
         
         this.filterJobs = this.filterJobs.bind(this);
         this.JobSearch = this.JobSearch.bind(this);
-        his.getToday = his.getToday.bind(this)
+        this.getToday = this.getToday.bind(this)
     }
 
     onSelectedItemsChange = (selectedItems) => {
@@ -162,12 +166,13 @@ export default class HotJobs extends React.Component {
     }
 
     async filterJobs() {
-        let currentUserID = "BPJlfxwcunNHIEviueeKxsQiOqG2";//firebase.auth().currentUser.uid;
+        let currentUserID = firebase.auth().currentUser.uid;
         let filtered = [];
         let search;
         let jobsRef;
         let favorite = [];
         let disliked = [];
+        let myAds = [];
         let liked = [];
         let dateInterface = new Date();
         //let day = dateInterface.getDate();
@@ -181,7 +186,7 @@ export default class HotJobs extends React.Component {
         let month = dateInterface.getMonth() + 1;
 
         for (let i = 0; i < 3; i++) {
-            dateInterface.setDate(dateInterface.getDate() + 1);
+            dateInterface.setDate(dateInterface.getDate() + i);
             day = dateInterface.getDate();
             month = dateInterface.getMonth() + 1;
             if (day < 10) {
@@ -220,6 +225,9 @@ export default class HotJobs extends React.Component {
             snapshot.child('users/' + currentUserID + '/liked').forEach(id => {
                 liked.push(id.val());
             });;
+            snapshot.child('users/' + currentUserID + '/ads').forEach(id => {
+                myAds.push(id.val());
+            });;
 
             console.log('FAVORITE: \n', favorite);
             console.log('disliked: \n', disliked);
@@ -243,9 +251,9 @@ export default class HotJobs extends React.Component {
 
                         console.log(snapshot.child('jobs').child(childSnapshot.val()));
                         console.log('Current ID: ', childSnapshot.val());
-                        console.log(!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val())))
+                        console.log(!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val()) || myAds.includes(childSnapshot.val())))
 
-                        if (!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val()))) {
+                        if (!(favorite.includes(childSnapshot.val()) || liked.includes(childSnapshot.val()) || disliked.includes(childSnapshot.val()) || idArr.includes(childSnapshot.val()) || myAds.includes(childSnapshot.val()))) {
                             console.log('*******************************************************');
                             let job = snapshot.child('jobs/' + childSnapshot.val());
                             console.log("childSnapshot: \n", childSnapshot);

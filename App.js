@@ -22,7 +22,7 @@ import Search from './src/Views/Search/Search'
 import FavoriteJobs from './src/Views/FavoriteJobs/FavoriteJobs'
 import Contact_Us from './src/Views/Contact_Us/Contact_Us'
 import Ratings from './src/Views/Ratings/Ratings'
-
+console.disableYellowBox = true;
 const Routes = StackNavigator(
   {
     Login:        { screen: Login },

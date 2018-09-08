@@ -13,14 +13,12 @@ export default class Ad extends React.Component {
   };
   constructor(props) {
     super(props);
-    //console.ignoredYellowBox = [
-    //  'Setting a timer'
-    //];
+    console.disableYellowBox = true
     try {
       Firebase.initialise();
     } catch (error) { }
     this.state = {
-      bossId: "",
+      bossName: "",
       title: "",
       pay: "",
       city: "",
@@ -33,10 +31,10 @@ export default class Ad extends React.Component {
       tag3: "",
       image: "",
       remarks: "",
-      favorite: "",
-      liked: "",
-      disliked: "",
-      adID: this.props.navigation.state.params.id,
+      favorite: [],
+      liked: [],
+      disliked: [],
+      adID: this.props.navigation.state.params.adID,
     }
   }
   async componentWillMount() {
@@ -51,34 +49,25 @@ export default class Ad extends React.Component {
         this.state.bossId = jobProfile.bossId;
         console.log("Title: " + jobProfile.city);
         console.log("asdasd: " + this.state.bossId);*/
-        this.state.bossId = jobProfile.bossId;
-        console.log('this.state.bossId: ',this.state.bossId)
-        this.state.title = jobProfile.title;
-        console.log('this.state.title: ',this.state.title)
-        this.state.pay = jobProfile.pay;
-        console.log('this.state.pay: ',this.state.pay)
-        this.state.city = jobProfile.city;
-        console.log('this.state.city: ',this.state.city)
-        this.state.place = jobProfile.place;
-        console.log('this.state.place: ',this.state.place)
-        this.state.date = jobProfile.date;
-        console.log('this.state.date: ',this.state.date)
-        this.state.start = jobProfile.start;
-        console.log('this.state.start: ',this.state.start)
-        this.state.end = jobProfile.end;
-        console.log('this.state.end: ',this.state.end)
-        this.state.tag1 = jobProfile.tag1;
-        console.log('this.state.tag1: ',this.state.tag1)
-        this.state.tag2 = jobProfile.tag2;
-        console.log('this.state.tag2: ',this.state.tag2)
-        this.state.tag3 = jobProfile.tag3;
-        console.log('this.state.tag3: ',this.state.tag3)
-        this.state.image = jobProfile.image;
-        console.log('this.state.image: ',this.state.image)
-        this.state.remarks = jobProfile.remarks;
-        console.log('this.state.remarks: ',this.state.remarks)
-        this.state.liked = jobProfile.liked;
-        console.log('this.state.liked: ',this.state.liked)
+        this.setState({
+          bossName: jobProfile.bossName,
+          title: jobProfile.title,
+          pay: jobProfile.pay,
+          city: jobProfile.city,
+          place: jobProfile.place,
+          date: jobProfile.date,
+          start: jobProfile.start,
+          end: jobProfile.end,
+          tag1: jobProfile.tag1,
+          tag2: jobProfile.tag2,
+          tag3: jobProfile.tag3,
+          image: jobProfile.image,
+          remarks: jobProfile.remarks,
+          //favorite: jobProfile.favorite,
+          //liked: jobProfile.liked,
+          //disliked: jobProfile.disliked,
+        })
+        console.log(this.state)
       })
     } catch (error) {
       console.log(error.toString())
@@ -116,7 +105,8 @@ export default class Ad extends React.Component {
           <Text> {'   ' +this.state.tag2}</Text>
           <Text> {'   ' +this.state.tag3}</Text>
           <Text> {this.state.image}</Text>
-          <Text> Remarks: {this.state.remarks}</Text>
+          <Text> Remarks: </Text>
+          <Text> {'   ' + this.state.remarks}</Text>
           <EvilIcons name="like" size={30} />
           <Text> {this.state.liked}</Text>
         </View>

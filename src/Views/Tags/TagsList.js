@@ -12,7 +12,7 @@ var userList = {
   "Renovations":"Renovations",
   "Security/Ushers":"Security/Ushers",
   "Bartender":"Bartender",
-  "Animals (Keep or Trip)":"Animals (Keep or Trip)",
+  "Animals":"Animals",
   "Babysitter":"Babysitter",
   "Working from home":"Working from home",
   "Shipments":"Shipments",
@@ -40,6 +40,7 @@ var weDoIt=false;
 export default class TagsList extends React.Component{
     constructor(props) {
         super(props);
+        console.disableYellowBox = true
         try {
             Firebase.initialise();
             } catch (error) {}
@@ -56,7 +57,10 @@ export default class TagsList extends React.Component{
             favorite: ['0'],
             liked:['0'],
             disliked:['0'],
-            ads:['0']
+            ads:['0'],
+            rating: {amount:0, sum: 0},
+            toRate:['0'],
+            isRated:['0']
         }
        
  
@@ -92,15 +96,18 @@ export default class TagsList extends React.Component{
                     var userId=firebase.auth().currentUser.uid;
                     console.log(userId)            
                     firebase.database().ref('users/'+ userId).set({
-                       
+                        userId: userId,
                         full_name: this.state.fName,
                         email: this.state.email,
                         tags:this.state.itemToSub,
                         phone_num: this.state.pNumber,
-                        //favorite: this.state.favorite,
-                        //liked: this.state.liked,
-                        //disliked:this.state.disliked,
-                        //ads:this.state.ads
+                        favorite: this.state.favorite,
+                        liked: this.state.liked,
+                        disliked:this.state.disliked,
+                        ads:this.state.ads,
+                        rating:this.state.rating,
+                        toRate:this.state.toRate,
+                        isRated:this.state.isRated,
                     });
                     Alert.alert('Welcome:)','Now you can start counting \nmoney for the weekend.. ;D');
                     //TODO : TIMEOUT? FOR WHAT??
@@ -136,7 +143,7 @@ export default class TagsList extends React.Component{
                         multiple={true} //
                         placeholder={"Search"}
                         placeholderTextColor={'#fff'}
-                        returnValue={"label"} // label or value
+                        returnValue={"value"} // label or value
                         callback={(res)=>
                             {
                                 /*if(res.length>7)

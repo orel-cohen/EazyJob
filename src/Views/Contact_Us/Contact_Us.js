@@ -25,6 +25,7 @@ export default class Contact_Us extends React.Component {
 
     constructor(props) {
         super(props);
+        console.disableYellowBox = true
         try {
             Firebase.initialise();
         } catch (error) { }
@@ -47,12 +48,14 @@ export default class Contact_Us extends React.Component {
         });
     }
 
-    sendMail = (title, message) => {
+    async sendMail(title, message) {
         const to = ['rodrigoshiller@gmail.com']
-        /*email(to, {
+        title = '[EasyJob] - ' + title
+        message = message + '\n\nUser ID: ' + this.state.currUserID
+        email(to, {
             subject: title,
             body: message,
-        }).catch(console.error)*/
+        }).catch(console.error)
         
         
     }

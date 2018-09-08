@@ -14,16 +14,14 @@ export default class MyAds extends React.Component {
     };
     constructor(props) {
         super(props);
-        //console.ignoredYellowBox = [
-        //  'Setting a timer'
-        //];
+        console.disableYellowBox = true
         try {
             Firebase.initialise();
         } catch (error) { }
         this.state = {
             myJobs: [],
-            jobsID: []
-
+            jobsID: [],
+            currentUserID: firebase.auth().currentUser.uid
         }
         this.MyAdsID = this.MyAdsID.bind(this)
         this.MyAdsDetails = this.MyAdsDetails.bind(this)
@@ -38,14 +36,18 @@ export default class MyAds extends React.Component {
     }
 
     async MyAdsID() {
-        //var currentUser = firebase.auth().currentUser.uid;
+        var uid = this.state.currentUserID;
+        console.log('uid: ', uid)
         let jobIDArray = []
         try {
-            let value = await firebase.database().ref('users/').child("TL0RQUso3rQWqXZIOwR8UocN5YT2").child("ads").once('value', async (snapshot) => {
+            let value = await firebase.database().ref('users/').child(uid).child("ads").once('value', async (snapshot) => {
                 snapshot.forEach(childSnapshot => {
-                    jobID = childSnapshot.val();
-                    // this.state.jobsID.push(jobID);
-                    jobIDArray.push(jobID)
+                    if(childSnapshot.val() != "0") {
+                        jobID = childSnapshot.val();
+                        console.log('jobID: ', jobID)
+                        // this.state.jobsID.push(jobID);
+                        jobIDArray.push(jobID)
+                    }
                 })
 
             })
@@ -62,7 +64,7 @@ export default class MyAds extends React.Component {
         //var currentUser = firebase.auth().currentUser.uid;
         let jobIDArray = this.state.jobsID;
         let myJobsArray = []
-
+        console.log('jobIDArray: ', jobIDArray)
         try {
             await jobIDArray.map(async (profile) => {
                 let value = await firebase.database().ref('jobs/' + profile).once('value', snapshot => {
@@ -101,6 +103,7 @@ export default class MyAds extends React.Component {
                             backgroundColor='#3498db'
                             title='Details'
                             icon={{ name: 'menu' }}
+                            onPress={()=> this.props.navigation.navigate('Ad', {adID: item.addid})}
                         >
                         </Button>
                     </View>
@@ -108,7 +111,7 @@ export default class MyAds extends React.Component {
                         <Button
                             backgroundColor='#3498db'
                             title='Liked List!'
-                            onPress={()=> this.props.navigation.navigate('CallList', {adID: item.liked})}/>
+                            onPress={()=> this.props.navigation.navigate('CallList', {userLikes: item.liked, adId: item.addid})}/>
                     </View>
                 </View>
             </View>

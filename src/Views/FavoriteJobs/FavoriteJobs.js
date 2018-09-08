@@ -19,16 +19,14 @@ export default class FavoriteJobs extends React.Component {
     };
     constructor(props) {
         super(props);
-        console.ignoredYellowBox = [
-            'Setting a timer'
-        ]
+        console.disableYellowBox = true
         try {
             Firebase.initialise();
         } catch (error) { }
         this.state = {
             myFavoiteJobs: [],
             jobsID: [],
-            currentUserId: 'BPJlfxwcunNHIEviueeKxsQiOqG2',//firebase.auth().currentUser.uid,
+            currentUserId: firebase.auth().currentUser.uid,
             test: '',
         }
 
@@ -36,17 +34,13 @@ export default class FavoriteJobs extends React.Component {
         this.loadJobs = this.loadJobs.bind(this)
         this.renderItem = this.renderItem.bind(this)
         this.showDetails = this.showDetails.bind(this)
-        this.disliked = this.disliked.bind(this)
-        this.liked = this.liked.bind(this)
+        this.moveJob = this.moveJob.bind(this)
     }
     //componentWillMount
     async componentDidMount() {
         jobID = ''
         await this.loadData();
     }
-<<<<<<< HEAD
-
-
     async loadData() {
         let uid = this.state.currentUserId
         let jobIDArray = []
@@ -63,31 +57,6 @@ export default class FavoriteJobs extends React.Component {
             this.setState({ jobsID: jobIDArray })
             await this.loadJobs()
 
-=======
-    async componentWillMount() {
-        console.log("1");
-        //jobID = '';
-        try {
-            console.log("2");
-            //var currentUser = firebase.auth().currentUser.uid;
-            var favoriteID= await this.GetFavoriteID();
-            console.log("123123"+this.state.jobsID);
-            console.log("22222333"+favoriteID);
-
-            /*try {
-                console.log("123");
-                this.state.jobsID.forEach(profile => {
-                    console.log(profile);
-                    firebase.database().ref('jobs/' + profile).once('value', snapshot => {
-                        this.state.myFavoiteJobs.push(snapshot);
-                        console.log(this.state.myFavoiteJobs);
-                    })
-                });
-                console.log("done" + this.state.myFavoiteJobs);
-            } catch (error) {
-                console.log(error.toString())
-            }*/
->>>>>>> 03f4889c5ee42b22c5d0bcc6b4a51a00ff82faaa
         } catch (error) {
             console.log('caught error', e)
         }
@@ -114,10 +83,8 @@ export default class FavoriteJobs extends React.Component {
             console.log('caught error', e);
         }
     }
-<<<<<<< HEAD
-=======
 
-    async GetFavoriteID(){
+   /* async GetFavoriteID(){
         await firebase.database().ref('users/').child("TL0RQUso3rQWqXZIOwR8UocN5YT2").child("favorite").once('value', snapshot => {
             snapshot.forEach(childSnapshot => {
                 jobID = childSnapshot.val();
@@ -127,11 +94,10 @@ export default class FavoriteJobs extends React.Component {
         })
         return jobsID;
     }
-    async FindDetails() {
->>>>>>> 03f4889c5ee42b22c5d0bcc6b4a51a00ff82faaa
+    async FindDetails() {*/
 
     // "where" refers to where to do the operation - "liked" or "disliked"
-    async disliked(job, where) {
+    async moveJob(job, where) {
         uid = this.state.currentUserId
         jobID = job.addid
 
@@ -152,14 +118,10 @@ export default class FavoriteJobs extends React.Component {
         })
     }
 
-    async liked(job) {
-        
-    }
-
     async showDetails(job) {
         let id = job.addid + ''
         console.log('id: ', id)
-        this.props.navigation.navigate('Ad', { id: id })
+        this.props.navigation.navigate('Ad', { adID: id })
     }
 
     renderItem(job) {
@@ -201,7 +163,7 @@ export default class FavoriteJobs extends React.Component {
                             <View style={styles.buttonContainer}>
                                 <View style={styles.button}>
                                     <Button
-                                        onPress={() => this.disliked(item, 'disliked')}
+                                        onPress={() => this.moveJob(item, 'disliked')}
                                         backgroundColor='red'
                                         title='Bye!'
                                         icon={{ name: 'close' }}
@@ -218,7 +180,7 @@ export default class FavoriteJobs extends React.Component {
                                 </View>
                                 <View style={styles.button}>
                                     <Button
-                                        onPress={() => this.disliked(item, 'liked')}
+                                        onPress={() => this.moveJob(item, 'liked')}
                                         backgroundColor='green'
                                         title='Work!'
                                         width='33%'

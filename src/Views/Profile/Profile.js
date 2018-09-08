@@ -28,6 +28,7 @@ export default class Profile extends React.Component {
       };
     constructor(props) {
         super(props);
+        console.disableYellowBox = true
         try {
             Firebase.initialise();
         } catch (error) { }
@@ -44,7 +45,6 @@ export default class Profile extends React.Component {
             // profile: this.setProfile(),
 
         };
-        console.log(this.state.currentUserID);
     }
 
     /* This function runs before loading the page. */
@@ -59,7 +59,6 @@ export default class Profile extends React.Component {
             rating: rating,
             mail: mail,
         })
-        console.log(this.state.fName, " ", this.state.lName)
 
         
     }
@@ -76,21 +75,20 @@ export default class Profile extends React.Component {
         var test = await firebase.database().ref('users/' + this.state.currUserID).once('value', snapshot => {
             mail = snapshot.child('email').val();
         })
-        console.log('mail: ',mail)
         return mail;
     }
 
     async getAvgRating() {
-        var amount;
-        var sum;
+        var amount = 0;
+        var sum = 0;
+        var avg = 0;
         var test = await firebase.database().ref('users/' + this.state.currUserID + '/rating').once('value', snapshot => {
             amount = snapshot.child('amount').val();
             sum = snapshot.child('sum').val();
         })
-        var avg = sum / amount;
-        console.log('amount = ',amount);
-        console.log('sum = ', sum);
-        console.log('sum / amount',avg);
+        if(amount > 0) {
+            avg = sum / amount;
+        }
 
         this.setState({rating: avg});
         return avg;
@@ -103,7 +101,6 @@ export default class Profile extends React.Component {
                 
                 name = snapshot.val().full_name ?  snapshot.val().full_name : 'Anonymous';
                 name = name.split(' ');
-                console.log("INSIDE FIREBASE");
             }).then(() => {console.log("THEN AFTER FIREBASE")})
               .catch(error => { console.log('error data enets .', error);});
         } catch (error) {
@@ -116,31 +113,23 @@ export default class Profile extends React.Component {
     async getName(id) {
         
         var name = await this.getNameDB(id)
-        console.log("_____FULLNAME_OUTSIDE: " , name);
         return name;
     }
 
 
     render() {
         
-        let pic = { uri: this.state.profilePic };
-        var numbers = [5, 4, 9, 2, 3];
+       // let pic = { uri: this.state.profilePic };
 
-
-
-        //this.state.rating = this.getAvgRating();
-        console.log(this.state.currUserID);
-        console.log(firebase.auth().currentUser.uid);
-        //console.log(this.state.profile)
         return (
             <View /*style={styles.container}*/>
                 <ScrollView>
                     <View style={{ flexDirection: 'row' }}/*style={styles.profileBar}*/>
 
-                        <Image
+                        {/*<Image
                             style={styles.logoStyle}
                             source={pic}
-                        />
+                        />*/}
                         <View>
                             <Text style={styles.mainRowText}>{this.state.fName}</Text>
                             <Text style={styles.mainRowText}>{this.state.lName}</Text>
@@ -156,12 +145,12 @@ export default class Profile extends React.Component {
                     </View>
                 </ScrollView>
 
-                <View>
+                {/*<View>
                     <Button style={styles.footer}
                         title='View Ratings'
                         onPress={() => 'TEST'}
                     />
-                </View>
+                </View>*/}
             </View>
         )
     }

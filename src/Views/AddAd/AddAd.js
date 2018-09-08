@@ -11,10 +11,13 @@ export default class SignUp extends React.Component {
     };
     constructor(props) {
         super(props);
+        console.disableYellowBox = true
         try {
             Firebase.initialise();
         } catch (error) { }
         //this.transferData=this.transferData.bind(this);
+        let currentTime = this.getTime()
+        let today = this.getDate()
         this.state = {
             bossName:this.props.navigation.state.params.userName,
             addTitle: "",
@@ -24,11 +27,11 @@ export default class SignUp extends React.Component {
             city: "Haifa Area",
             place: "",
             placeValidate: false,
-            date: "",
+            date: today,
             dateValidate: false,
-            startTime: "",
+            startTime: currentTime,
             startTimeValidate: false,
-            endTime: "",
+            endTime: currentTime,
             endTimeValidate: false,
             tag1: "Animals",
             tag2: "",
@@ -41,13 +44,36 @@ export default class SignUp extends React.Component {
         };
     }
 
+    getDate = () => {
+
+        let dateInterface = new Date();
+        let day = dateInterface.getDate();
+        let month = dateInterface.getMonth() + 1;
+        if(day < 10) {
+            day = '0' + day;
+        }
+        if(month < 10) {
+            month = '0' + month;
+        }
+        let today = day + '-' + month + '-' + dateInterface.getFullYear()
+
+        return today
+
+    }
+
+    getTime = () => {
+        let dateInterface = new Date();
+        let hour = dateInterface.getHours()
+        let minutes = dateInterface.getMinutes()
+
+        return hour +':'+minutes
+    }
+
     publish() {
         //DismissKeyboard();
         if (this.state.payValidate != false && this.state.placeValidate != false && this.state.dateValidate != false && this.state.startTimeValidate != false && this.state.endTimeValidate != false && this.state.titleValidate != false) {
-            console.log("1");
             if ((this.state.tag1 == this.state.tag2 || this.state.tag1 == this.state.tag3) || (this.state.tag2 != "" && this.state.tag3 != "" && this.state.tag3 == this.state.tag2)) {
                 Alert.alert("Hi, littele problem", "You choosed category more than one time");
-                console.log("2");
             }
             else {
                 try {
@@ -75,21 +101,16 @@ export default class SignUp extends React.Component {
                     }
                     addId = newAd.addid
                     ref.set(newAd)
-                    ref = firebase.database().ref('users/').child(userId + '/ads').push(addId)
-                    ref.set(addId)
-                    ref = firebase.database().ref('JobSearch/' + this.state.tag1 + '/' + this.state.city + '/' + this.state.date).push(addId)
-                    ref.set(addId)
-                    ref = firebase.database().ref('HotJobSearch/' + this.state.city + '/' + this.state.date).push(addId)
-                    ref.set(addId)
+                    ref = firebase.database().ref('users/').child(userId + '/ads').child(addId).set(addId)
+                    ref = firebase.database().ref('JobSearch/' + this.state.tag1 + '/' + this.state.city + '/' + this.state.date).child(addId).set(addId)
+                    ref = firebase.database().ref('HotJobSearch/' + this.state.city + '/' + this.state.date).child(addId).set(addId)
                     if (this.state.tag2 != '') {
-                        ref = firebase.database().ref('JobSearch/' + this.state.tag2 + '/' + this.state.city).push(addId)
-                        ref.set(addId)
+                        ref = firebase.database().ref('JobSearch/' + this.state.tag2 + '/' + this.state.city).child(addId).set(addId)
                     }
                     if (this.state.tag3 != '') {
-                        ref = firebase.database().ref('JobSearch/' + this.state.tag3 + '/' + this.state.city).push(addId)
-                        ref.set(addId)
+                        ref = firebase.database().ref('JobSearch/' + this.state.tag3 + '/' + this.state.city).child(addId).set(addId)
                     }
-                    Alert.alert('Your add published', 'Now you need wait for workers ;)');
+                    Alert.alert('Your add has been published', 'Now you need wait for workers ;)');
                     //TODO : TIMEOUT? FOR WHAT??
                     setTimeout(() => {
                         this.props.navigation.navigate('HomeScreen')
@@ -306,9 +327,10 @@ export default class SignUp extends React.Component {
                         !this.state.startTimeValidate ? styles.error : null]}
                     date={this.state.startTime}
                     mode="time"
-                    format="LT"
+                    format="hh:mm"
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
+                    is24Hour={true}
                     showIcon={false}
                     customStyles={{
                         dateIcon: {
@@ -329,9 +351,10 @@ export default class SignUp extends React.Component {
                         !this.state.endTimeValidate ? styles.error : null]}
                     date={this.state.endTime}
                     mode="time"
-                    format="LT"
+                    format="hh:mm"
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
+                    is24Hour={true}
                     showIcon={false}
                     customStyles={{
                         dateIcon: {
